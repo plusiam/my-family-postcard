@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나만의 계절 가족 사랑 엽서 만들기 🌸</title>
+    <title>마음편지 💝</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -282,18 +282,87 @@
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* 미리보기 전용 모드 스타일 */
+        .preview-only-mode .input-section {
+            display: none !important;
+        }
+        
+        .preview-only-mode .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .preview-only-mode .grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+        
+        .preview-only-mode .preview-section {
+            margin: 0;
+            padding: 1.5rem;
+            background: transparent;
+            box-shadow: none;
+        }
+        
+        .preview-only-mode #postcardPreview {
+            min-height: 400px;
+            height: auto;
+        }
+        
+        .preview-only-mode header {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .preview-only-mode header h1 {
+            font-size: 2rem;
+        }
+        
+        .preview-only-mode footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        .preview-only-mode footer p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        
+        /* 모바일에서 미리보기 모드 최적화 */
+        @media (max-width: 640px) {
+            .preview-only-mode .container {
+                max-width: 100%;
+                padding: 1rem;
+            }
+            
+            .preview-only-mode header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .preview-only-mode .preview-section {
+                padding: 1rem;
+            }
+            
+            .preview-only-mode #postcardPreview {
+                min-height: 350px;
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-pink-100 via-purple-50 to-sky-100 flex flex-col items-center justify-center min-h-screen p-4">
 
     <div class="container mx-auto max-w-4xl bg-white shadow-2xl rounded-xl p-4 sm:p-6 md:p-8">
         <header class="text-center mb-6 sm:mb-8">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-sky-500">🌸 나만의 계절 가족 사랑 엽서 🌸</h1>
-            <p class="text-slate-600 mt-2 sm:mt-3 text-sm md:text-base">소중한 가족에게 사랑하는 마음을 담아 계절의 아름다움과 함께 세상에 하나뿐인 엽서를 만들어보세요!</p>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-sky-500">💝 마음편지 💝</h1>
+            <p class="text-slate-600 mt-2 sm:mt-3 text-sm md:text-base">소중한 사람에게 마음을 담아 계절의 아름다움과 함께 세상에 하나뿐인 편지를 만들어보세요!</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-            <div class="bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md">
+            <div class="input-section bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md">
                 <div class="mb-6 sm:mb-8">
                     <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-4">🌈 계절 테마를 선택해보세요!</h2>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -320,23 +389,23 @@
                     </div>
                 </div>
 
-                <h3 class="text-xl sm:text-2xl font-semibold text-slate-700 mb-4 sm:mb-6">✍️ 엽서 내용 입력하기</h3>
+                <h3 class="text-xl sm:text-2xl font-semibold text-slate-700 mb-4 sm:mb-6">✍️ 편지 내용 입력하기</h3>
                 <div class="space-y-4">
                     <div>
                         <label for="recipient" class="block text-sm font-medium text-slate-700">💌 받는 사람:</label>
-                        <input type="text" id="recipient" name="recipient" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 사랑하는 엄마 아빠께">
+                        <input type="text" id="recipient" name="recipient" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 사랑하는 친구에게">
                     </div>
                     <div>
                         <label for="sender" class="block text-sm font-medium text-slate-700">✍️ 보내는 사람:</label>
                         <input type="text" id="sender" name="sender" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 귀염둥이 OOO 올림">
                     </div>
                     <div>
-                        <label for="message" class="block text-sm font-medium text-slate-700">💕 사랑의 메시지:</label>
-                        <textarea id="message" name="message" rows="5" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="가족에게 전하고 싶은 따뜻한 마음을 자유롭게 적어보세요."></textarea>
+                        <label for="message" class="block text-sm font-medium text-slate-700">💕 마음의 메시지:</label>
+                        <textarea id="message" name="message" rows="5" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="소중한 사람에게 전하고 싶은 따뜻한 마음을 자유롭게 적어보세요."></textarea>
                     </div>
                     <div>
-                        <label for="promise" class="block text-sm font-medium text-slate-700">🤝 가족을 위해 내가 꼭 실천할 약속:</label>
-                        <textarea id="promise" name="promise" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 부모님 말씀 잘 듣고, 동생과 사이좋게 지내기"></textarea>
+                        <label for="promise" class="block text-sm font-medium text-slate-700">🤝 소중한 사람을 위해 내가 꼭 실천할 약속:</label>
+                        <textarea id="promise" name="promise" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 더 자주 안부를 물어보고, 따뜻한 말 건네기"></textarea>
                     </div>
                     <div>
                         <label for="date" class="block text-sm font-medium text-slate-700">📅 작성 날짜:</label>
@@ -346,19 +415,19 @@
 
                 <div class="mt-6 sm:mt-8 space-y-3">
                     <button id="updatePreview" class="w-full flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
-                        <span class="mr-2 text-lg">🎨</span>엽서 확인하기
+                        <span class="mr-2 text-lg">🎨</span>편지 확인하기
                     </button>
                     
                     <button id="downloadImageBtn" class="w-full flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
-                        <span class="mr-2 text-lg">📸</span>엽서 이미지로 저장하기
+                        <span class="mr-2 text-lg">📸</span>편지 이미지로 저장하기
                     </button>
                     
                     <button id="copyLinkBtn" class="w-full flex items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
-                        <span class="mr-2 text-lg">🔗</span>애니메이션 엽서 링크 복사
+                        <span class="mr-2 text-lg">🔗</span>마음편지 링크 복사
                     </button>
                     
                     <button id="copyContent" class="w-full flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
-                        <span class="mr-2 text-lg">📋</span>내용 전체 복사
+                        <span class="mr-2 text-lg">📋</span>편지 내용 전체 복사
                     </button>
                     
                     <button id="resetForm" class="w-full flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
@@ -369,8 +438,8 @@
                 <div id="status-messages" aria-live="polite" aria-atomic="true" class="sr-only"></div>
             </div>
 
-            <div class="bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md flex flex-col">
-                <h2 class="text-xl sm:text-2xl font-semibold text-slate-700 mb-4 sm:mb-6 text-center">✨ 완성된 엽서 미리보기 ✨</h2>
+            <div class="preview-section bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md flex flex-col">
+                <h2 class="text-xl sm:text-2xl font-semibold text-slate-700 mb-4 sm:mb-6 text-center">✨ 완성된 편지 미리보기 ✨</h2>
                 <div id="postcardPreview" class="season-spring w-full min-h-[400px] sm:min-h-[500px] p-4 sm:p-6 rounded-lg shadow-inner flex flex-col transition-all duration-300 ease-in-out relative overflow-hidden">
                     
                     <!-- 계절별 배경 애니메이션 영역들 -->
@@ -399,7 +468,7 @@
                         </div>
                         
                         <div class="text-center flex-grow py-2 px-1 relative">
-                            <p id="previewMessage" class="text-slate-800 leading-relaxed postcard-content mb-3 sm:mb-4">따뜻한 사랑의 메시지를 여기에 적어주세요...</p>
+                            <p id="previewMessage" class="text-slate-800 leading-relaxed postcard-content mb-3 sm:mb-4">따뜻한 마음의 메시지를 여기에 적어주세요...</p>
                             <p id="previewPromise" class="text-indigo-600 font-medium postcard-content mb-2"></p>
                         </div>
                         
@@ -428,7 +497,7 @@
                         </div>
                         <div class="flex items-center">
                             <span class="mr-2">🔗</span>
-                            <strong>링크 공유:</strong> '애니메이션 엽서 링크 복사'로 아름다운 움직이는 엽서를 공유하세요!
+                            <strong>링크 공유:</strong> '마음편지 링크 복사'로 편지만 깔끔하게 보이는 링크를 생성해요!
                         </div>
                         <div class="flex items-center">
                             <span class="mr-2">📸</span>
@@ -442,7 +511,7 @@
                     </div>
                     <div class="mt-2 p-2 bg-purple-100 rounded-md">
                         <p class="text-xs font-medium text-purple-800">
-                            🔗 <strong>링크 공유 팁:</strong> '애니메이션 엽서 링크 복사' 버튼으로 생성된 링크를 친구나 가족과 공유하면, 받는 사람도 똑같은 아름다운 계절 애니메이션과 함께 엽서 내용을 볼 수 있어요!
+                            🔗 <strong>링크 공유 팁:</strong> '마음편지 링크 복사' 버튼으로 생성된 링크를 공유하면, 받는 사람은 편지 내용과 아름다운 계절 애니메이션만 깔끔하게 볼 수 있어요!
                         </p>
                     </div>
                     <p class="text-xs mt-2 sm:mt-3 text-blue-600">
@@ -453,7 +522,12 @@
         </div>
         
         <footer class="text-center mt-8 sm:mt-10 pt-4 sm:pt-6 border-t border-slate-200">
-            <p class="text-xs sm:text-sm text-slate-500">스마트폼빌더가 정성껏 만들어 드렸어요! 🤖 | 계절별 애니메이션 + 링크 공유 + Tailwind CSS + html2canvas</p>
+            <p class="text-xs sm:text-sm text-slate-500">
+                만든이 : 룰루랄라 한기쌤 🎓 | 
+                <a href="https://www.facebook.com/playrurulala" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                    페이스북 👥
+                </a>
+            </p>
         </footer>
     </div>
 
@@ -506,6 +580,35 @@
         // 🔗 URL 매개변수에서 엽서 데이터 로드
         function loadPostcardFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
+            
+            // 미리보기 모드 확인
+            const isPreviewMode = urlParams.has('preview');
+            if (isPreviewMode) {
+                document.body.classList.add('preview-only-mode');
+                // 페이지 제목 변경
+                document.title = '공유받은 마음편지 💌';
+                // 미리보기 모드에서는 사용 방법 안내 숨기기
+                const usageSection = document.querySelector('.mt-4.sm\\:mt-6.p-3');
+                if (usageSection) {
+                    usageSection.style.display = 'none';
+                }
+                // 제목을 "공유받은 마음편지"로 변경
+                const mainTitle = document.querySelector('h1');
+                if (mainTitle) {
+                    mainTitle.textContent = '💌 공유받은 마음편지 💌';
+                }
+                // 설명 텍스트 변경
+                const description = document.querySelector('.text-slate-600');
+                if (description) {
+                    description.textContent = '누군가 당신에게 마음을 담아 보낸 특별한 편지입니다! 🎁';
+                }
+                // 미리보기 제목 변경
+                const previewTitle = document.querySelector('.preview-section h2');
+                if (previewTitle) {
+                    previewTitle.textContent = '💝 받은 마음편지 💝';
+                }
+            }
+            
             if (urlParams.has('postcard')) {
                 try {
                     const encodedData = urlParams.get('postcard');
@@ -522,13 +625,15 @@
                     }
                     
                     updatePostcardPreview();
-                    announceToScreenReader('공유된 엽서가 성공적으로 로드되었습니다.');
+                    announceToScreenReader('공유된 편지가 성공적으로 로드되었습니다.');
                     
                     // URL에서 매개변수 제거 (깔끔하게)
-                    window.history.replaceState({}, document.title, window.location.pathname);
+                    if (!isPreviewMode) {
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
                     
                 } catch (error) {
-                    console.error('엽서 데이터 로드 중 오류:', error);
+                    console.error('편지 데이터 로드 중 오류:', error);
                 }
             }
         }
@@ -546,7 +651,7 @@
             
             const encodedData = encodeURIComponent(JSON.stringify(postcardData));
             const currentURL = window.location.origin + window.location.pathname;
-            return `${currentURL}?postcard=${encodedData}`;
+            return `${currentURL}?postcard=${encodedData}&preview=true`;
         }
 
         // 🔗 링크 복사 기능
@@ -557,7 +662,7 @@
             
             try {
                 if (!recipientInput.value && !senderInput.value && !messageInput.value) {
-                    alert('엽서 내용을 입력한 후 링크를 생성해주세요! 😊');
+                    alert('편지 내용을 입력한 후 링크를 생성해주세요! 😊');
                     return;
                 }
                 
@@ -567,8 +672,8 @@
                 copyLinkBtn.innerHTML = '<span class="mr-2">✅</span>링크 복사 완료!';
                 copyLinkBtn.classList.add('copy-success');
                 
-                alert(`🎉 애니메이션 엽서 링크가 복사되었어요!\n\n이 링크를 친구나 가족에게 보내면 같은 계절 애니메이션과 내용이 담긴 엽서를 볼 수 있어요.\n\n💡 카카오톡, 문자, 이메일 등 어디든 붙여넣기(Ctrl+V 또는 Cmd+V) 하세요!`);
-                announceToScreenReader('엽서 링크가 클립보드에 복사되었습니다.');
+                alert(`🎉 마음편지 링크가 복사되었어요!\n\n이 링크를 친구나 가족에게 보내면 아름다운 계절 애니메이션과 함께 편지만 깔끔하게 볼 수 있어요.\n\n💡 카카오톡, 문자, 이메일 등 어디든 붙여넣기(Ctrl+V 또는 Cmd+V) 하세요!`);
+                announceToScreenReader('편지 링크가 클립보드에 복사되었습니다.');
                 
                 setTimeout(() => {
                     copyLinkBtn.classList.remove('copy-success');
@@ -811,8 +916,8 @@
         function updatePostcardPreview() {
             previewRecipient.textContent = recipientInput.value || '받는 사람 이름';
             previewSender.textContent = senderInput.value || '보내는 사람 이름';
-            previewMessage.textContent = messageInput.value || '따뜻한 사랑의 메시지를 여기에 적어주세요...';
-            previewPromise.textContent = promiseInput.value ? `👨‍👩‍👧‍👦 실천 약속: ${promiseInput.value}` : '';
+            previewMessage.textContent = messageInput.value || '따뜻한 마음의 메시지를 여기에 적어주세요...';
+            previewPromise.textContent = promiseInput.value ? `💝 실천 약속: ${promiseInput.value}` : '';
             
             const dateValue = dateInput.value;
             if (dateValue) {
@@ -880,7 +985,7 @@
             downloadImageBtn.disabled = true;
             downloadImageBtn.classList.add('loading');
             
-            announceToScreenReader('엽서 이미지 생성을 시작합니다.');
+                            announceToScreenReader('편지 이미지 생성을 시작합니다.');
             
             try {
                 if (typeof html2canvas === 'undefined') {
@@ -891,7 +996,7 @@
                 await new Promise(resolve => setTimeout(resolve, 500)); // 애니메이션 및 DOM 업데이트 대기
                 
                 if (!postcardPreview || postcardPreview.offsetWidth === 0) {
-                    throw new Error('엽서를 먼저 확인해주세요. 미리보기가 표시되지 않았습니다.');
+                    throw new Error('편지를 먼저 확인해주세요. 미리보기가 표시되지 않았습니다.');
                 }
 
                 const canvas = await html2canvas(postcardPreview, {
@@ -936,8 +1041,8 @@
                     throw new Error('이미지 데이터 생성에 실패했습니다.');
                 }
                 
-                const recipientName = recipientInput.value || '가족';
-                const fileName = `${recipientName.replace(/[^\w가-힣ㄱ-ㅎㅏ-ㅣ一-龠ぁ-ゔァ-ヴー]/g, '_')}_계절엽서_${currentSeason}.png`;
+                const recipientName = recipientInput.value || '소중한사람';
+                const fileName = `${recipientName.replace(/[^\w가-힣ㄱ-ㅎㅏ-ㅣ一-龠ぁ-ゔァ-ヴー]/g, '_')}_마음편지_${currentSeason}.png`;
                 
                 const downloadLink = document.createElement('a');
                 downloadLink.href = imgData;
@@ -947,8 +1052,8 @@
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
                 
-                announceToScreenReader('엽서 이미지가 성공적으로 저장되었습니다.');
-                alert(`🎉 ${currentSeason} 테마 엽서 이미지가 성공적으로 저장되었습니다!\n애니메이션의 현재 모습과 함께 다운로드 폴더에 저장되었어요.`);
+                announceToScreenReader('편지 이미지가 성공적으로 저장되었습니다.');
+                alert(`🎉 ${currentSeason} 테마 마음편지 이미지가 성공적으로 저장되었습니다!\n애니메이션의 현재 모습과 함께 다운로드 폴더에 저장되었어요.`);
                 
             } catch (error) {
                 console.error("이미지 생성 오류:", error);
@@ -972,7 +1077,7 @@
         
         updatePreviewButton.addEventListener('click', () => {
             updatePostcardPreview();
-            announceToScreenReader('엽서 내용이 업데이트되었습니다.'); // 버튼 클릭 시에는 안내
+                            announceToScreenReader('편지 내용이 업데이트되었습니다.'); // 버튼 클릭 시에는 안내
         });
         
         downloadImageBtn.addEventListener('click', downloadPostcardAsImage);
@@ -1000,17 +1105,17 @@
             };
 
             const contentToCopy = `
-계절 가족 사랑 엽서 ❤️
+마음편지 💝
 --------------------
 받는 사람: ${recipientInput.value}
 보내는 사람: ${senderInput.value}
 작성 날짜: ${formattedDate}
 선택한 계절: ${seasonNames[currentSeason]}
 
-[사랑의 메시지]
+[마음의 메시지]
 ${messageInput.value}
 
-[가족을 위한 나의 약속]
+[소중한 사람을 위한 나의 약속]
 ${promiseInput.value}
 --------------------
 `.trim();
@@ -1035,7 +1140,7 @@ ${promiseInput.value}
                 setTodayDate();
                 applySeason('spring');
                 updatePostcardPreview();
-                alert('모든 내용이 지워졌어요. 새로운 마음으로 엽서를 다시 작성해보세요! 😊');
+                alert('모든 내용이 지워졌어요. 새로운 마음으로 마음편지를 다시 작성해보세요! 😊');
                 announceToScreenReader('양식이 초기화되었습니다.');
             }
         });
@@ -1048,7 +1153,10 @@ ${promiseInput.value}
         window.addEventListener('resize', adjustTextSizeBasedOnContent);
         window.addEventListener('beforeunload', clearAllAnimations);
         
-        announceToScreenReader('계절별 애니메이션 가족 사랑 엽서 만들기 페이지가 로드되었습니다.');
+        // 미리보기 모드 확인하여 적절한 메시지 출력
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPreviewMode = urlParams.has('preview');
+        announceToScreenReader(isPreviewMode ? '공유받은 마음편지 페이지가 로드되었습니다.' : '마음편지 서비스 페이지가 로드되었습니다.');
     </script>
 </body>
 </html>
