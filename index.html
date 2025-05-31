@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나만의 가족 사랑 엽서 만들기 💖</title>
+    <title>나만의 계절 가족 사랑 엽서 만들기 🌸</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -11,59 +11,201 @@
             font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif;
         }
         
-        /* 엽서 테마별 스타일 확장 */
-        .theme-sky {
-            background-color: #e0f2fe;
-            border: 5px solid #7dd3fc;
-        }
-        .theme-sky .theme-icon { color: #0ea5e9; }
-        .theme-sky .recipient-sender-text { color: #0369a1; }
-
-        .theme-pink {
-            background-color: #fce7f3;
+        /* 계절별 엽서 테마 스타일 */
+        .season-spring {
+            background: linear-gradient(135deg, #fce7f3, #f3e8ff, #ecfdf5);
             border: 5px solid #f9a8d4;
         }
-        .theme-pink .theme-icon { color: #ec4899; }
-        .theme-pink .recipient-sender-text { color: #be185d; }
+        .season-spring .theme-icon { color: #ec4899; }
+        .season-spring .recipient-sender-text { color: #be185d; }
 
-        .theme-sunshine {
-            background-color: #fef9c3;
-            border: 5px solid #fde047;
+        .season-summer {
+            background: linear-gradient(135deg, #dbeafe, #e0f2fe, #ecfeff);
+            border: 5px solid #38bdf8;
         }
-        .theme-sunshine .theme-icon { color: #f59e0b; }
-        .theme-sunshine .recipient-sender-text { color: #b45309; }
-        
-        .theme-forest {
-            background-color: #f0fdf4;
-            border: 5px solid #86efac;
+        .season-summer .theme-icon { color: #0284c7; }
+        .season-summer .recipient-sender-text { color: #075985; }
+
+        .season-autumn {
+            background: linear-gradient(135deg, #fed7aa, #fecaca, #fef3c7);
+            border: 5px solid #fb923c;
         }
-        .theme-forest .theme-icon { color: #16a34a; }
-        .theme-forest .recipient-sender-text { color: #15803d; }
+        .season-autumn .theme-icon { color: #ea580c; }
+        .season-autumn .recipient-sender-text { color: #c2410c; }
         
-        .theme-ocean {
-            background-color: #ecfeff;
-            border: 5px solid #67e8f9;
+        .season-winter {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0, #f8fafc);
+            border: 5px solid #94a3b8;
         }
-        .theme-ocean .theme-icon { color: #0891b2; }
-        .theme-ocean .recipient-sender-text { color: #0e7490; }
+        .season-winter .theme-icon { color: #475569; }
+        .season-winter .recipient-sender-text { color: #334155; }
         
-        .theme-sunset {
-            background: linear-gradient(135deg, #fed7d7, #fbb6ce, #d6f5d6);
-            border: 5px solid #f687b3;
-        }
-        .theme-sunset .theme-icon { color: #d53f8c; }
-        .theme-sunset .recipient-sender-text { color: #97266d; }
-        
-        /* 테마 선택 상태 표시 */
-        .theme-option.selected {
+        /* 계절 선택 상태 표시 */
+        .season-option.selected {
             border-color: currentColor;
             transform: scale(1.05);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
+        /* 🌸 봄 - 꽃잎 흩날리기 애니메이션 */
+        .spring-petals {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .petal {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(ellipse, #fce7f3, #f9a8d4);
+            border-radius: 50% 0;
+            opacity: 0.7;
+            animation: petalFall linear infinite;
+        }
+        
+        @keyframes petalFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 🌊 여름 - 파도 애니메이션 */
+        .summer-waves {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: -50%;
+            width: 200%;
+            height: 40px;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.3), transparent);
+            border-radius: 50%;
+            animation: waveMove linear infinite;
+        }
+        
+        @keyframes waveMove {
+            0% {
+                transform: translateX(-50%) scaleY(1);
+            }
+            50% {
+                transform: translateX(-25%) scaleY(1.2);
+            }
+            100% {
+                transform: translateX(0%) scaleY(1);
+            }
+        }
+        
+        /* 🍂 가을 - 낙엽 떨어지기 애니메이션 */
+        .autumn-leaves {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .leaf {
+            position: absolute;
+            font-size: 16px;
+            opacity: 0.8;
+            animation: leafFall linear infinite;
+        }
+        
+        @keyframes leafFall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(180deg);
+                opacity: 0;
+            }
+        }
+        
+        /* ❄️ 겨울 - 눈 내리기 애니메이션 */
+        .winter-snow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .snowflake {
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            opacity: 0.9;
+            animation: snowFall linear infinite;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes snowFall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.9;
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 엽서 콘텐츠는 애니메이션보다 위에 표시 */
         .postcard-content {
+            position: relative;
+            z-index: 10;
             white-space: pre-wrap;
             word-break: break-all;
+        }
+        
+        .postcard-text-layer {
+            position: relative;
+            z-index: 10;
         }
         
         .loading {
@@ -94,39 +236,35 @@
 
     <div class="container mx-auto max-w-4xl bg-white shadow-2xl rounded-xl p-4 sm:p-6 md:p-8">
         <header class="text-center mb-6 sm:mb-8">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-sky-500">💖 나만의 가족 사랑 엽서 💖</h1>
-            <p class="text-slate-600 mt-2 sm:mt-3 text-sm md:text-base">소중한 가족에게 사랑하는 마음을 담아 세상에 하나뿐인 엽서를 만들어보세요!</p>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-sky-500">🌸 나만의 계절 가족 사랑 엽서 🌸</h1>
+            <p class="text-slate-600 mt-2 sm:mt-3 text-sm md:text-base">소중한 가족에게 사랑하는 마음을 담아 계절의 아름다움과 함께 세상에 하나뿐인 엽서를 만들어보세요!</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
             <div class="bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md">
-                <!-- 🆕 테마 선택을 맨 위로 이동 -->
+                <!-- 계절 테마 선택 -->
                 <div class="mb-6 sm:mb-8">
-                    <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-4">🎨 엽서 테마 먼저 골라보세요!</h2>
-                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
-                        <button id="themeSky" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-sky-400 transition-all duration-200 bg-sky-100" data-theme="sky">
-                            <span class="text-2xl mb-1">☁️</span>
-                            <span class="text-xs font-medium text-sky-700">하늘</span>
+                    <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-4">🌈 계절 테마를 선택해보세요!</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button id="seasonSpring" class="season-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-pink-400 transition-all duration-200 bg-pink-100" data-season="spring">
+                            <span class="text-3xl mb-1">🌸</span>
+                            <span class="text-sm font-medium text-pink-700">봄</span>
+                            <span class="text-xs text-pink-600">꽃잎 흩날림</span>
                         </button>
-                        <button id="themePink" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-pink-400 transition-all duration-200 bg-pink-100" data-theme="pink">
-                            <span class="text-2xl mb-1">💖</span>
-                            <span class="text-xs font-medium text-pink-700">핑크</span>
+                        <button id="seasonSummer" class="season-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-blue-400 transition-all duration-200 bg-blue-100" data-season="summer">
+                            <span class="text-3xl mb-1">🌊</span>
+                            <span class="text-sm font-medium text-blue-700">여름</span>
+                            <span class="text-xs text-blue-600">파도 움직임</span>
                         </button>
-                        <button id="themeSunshine" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-yellow-400 transition-all duration-200 bg-yellow-100" data-theme="sunshine">
-                            <span class="text-2xl mb-1">☀️</span>
-                            <span class="text-xs font-medium text-yellow-700">햇살</span>
+                        <button id="seasonAutumn" class="season-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-orange-400 transition-all duration-200 bg-orange-100" data-season="autumn">
+                            <span class="text-3xl mb-1">🍂</span>
+                            <span class="text-sm font-medium text-orange-700">가을</span>
+                            <span class="text-xs text-orange-600">낙엽 떨어짐</span>
                         </button>
-                        <button id="themeForest" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-green-400 transition-all duration-200 bg-green-100" data-theme="forest">
-                            <span class="text-2xl mb-1">🌳</span>
-                            <span class="text-xs font-medium text-green-700">숲속</span>
-                        </button>
-                        <button id="themeOcean" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-cyan-400 transition-all duration-200 bg-cyan-100" data-theme="ocean">
-                            <span class="text-2xl mb-1">🌊</span>
-                            <span class="text-xs font-medium text-cyan-700">바다</span>
-                        </button>
-                        <button id="themeSunset" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-purple-400 transition-all duration-200 bg-purple-100" data-theme="sunset">
-                            <span class="text-2xl mb-1">🌅</span>
-                            <span class="text-xs font-medium text-purple-700">석양</span>
+                        <button id="seasonWinter" class="season-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-gray-400 transition-all duration-200 bg-gray-100" data-season="winter">
+                            <span class="text-3xl mb-1">❄️</span>
+                            <span class="text-sm font-medium text-gray-700">겨울</span>
+                            <span class="text-xs text-gray-600">눈 내림</span>
                         </button>
                     </div>
                 </div>
@@ -158,7 +296,6 @@
                 <div class="mt-6 sm:mt-8 space-y-3">
                     <button id="updatePreview" class="w-full flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base"><span class="mr-2 text-lg">🎨</span>엽서 확인하기</button>
                     
-                    <!-- 🆕 새로운 이미지 다운로드 버튼 -->
                     <button id="downloadImageBtn" class="w-full flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
                         <span class="mr-2 text-lg">📸</span>엽서 이미지로 저장하기
                     </button>
@@ -173,44 +310,60 @@
 
             <div class="bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md flex flex-col">
                 <h2 class="text-xl sm:text-2xl font-semibold text-slate-700 mb-4 sm:mb-6 text-center">✨ 완성된 엽서 미리보기 ✨</h2>
-                <div id="postcardPreview" class="theme-sky w-full min-h-[400px] sm:min-h-[500px] p-4 sm:p-6 rounded-lg shadow-inner flex flex-col transition-all duration-300 ease-in-out relative">
-                    <div class="absolute top-2 right-2 sm:top-4 sm:right-4 text-2xl sm:text-4xl theme-icon" id="previewThemeIcon">☁️</div>
+                <div id="postcardPreview" class="season-spring w-full min-h-[400px] sm:min-h-[500px] p-4 sm:p-6 rounded-lg shadow-inner flex flex-col transition-all duration-300 ease-in-out relative overflow-hidden">
                     
-                    <div class="mb-4">
-                        <p class="text-sm sm:text-base recipient-sender-text">To. <span id="previewRecipient" class="font-semibold postcard-content">받는 사람 이름</span></p>
-                    </div>
+                    <!-- 계절별 배경 애니메이션 영역들 -->
+                    <div id="springPetals" class="spring-petals"></div>
+                    <div id="summerWaves" class="summer-waves" style="display: none;"></div>
+                    <div id="autumnLeaves" class="autumn-leaves" style="display: none;"></div>
+                    <div id="winterSnow" class="winter-snow" style="display: none;"></div>
                     
-                    <div class="text-center flex-grow py-2 px-1">
-                        <p id="previewMessage" class="text-slate-800 leading-relaxed postcard-content mb-3 sm:mb-4">따뜻한 사랑의 메시지를 여기에 적어주세요...</p>
-                        <p id="previewPromise" class="text-indigo-600 font-medium postcard-content"></p>
-                    </div>
-                    
-                    <div class="mt-4 text-right">
-                        <p class="text-sm sm:text-base recipient-sender-text">From. <span id="previewSender" class="font-semibold postcard-content">보내는 사람 이름</span></p>
-                        <p id="previewDate" class="text-xs text-slate-500 mt-1 postcard-content">날짜를 선택해주세요</p>
+                    <!-- 텍스트 레이어 (애니메이션 위에 표시) -->
+                    <div class="postcard-text-layer flex flex-col h-full">
+                        <div class="absolute top-2 right-2 sm:top-4 sm:right-4 text-2xl sm:text-4xl theme-icon" id="previewThemeIcon">🌸</div>
+                        
+                        <div class="mb-4">
+                            <p class="text-sm sm:text-base recipient-sender-text">To. <span id="previewRecipient" class="font-semibold postcard-content">받는 사람 이름</span></p>
+                        </div>
+                        
+                        <div class="text-center flex-grow py-2 px-1 relative">
+                            <p id="previewMessage" class="text-slate-800 leading-relaxed postcard-content mb-3 sm:mb-4">따뜻한 사랑의 메시지를 여기에 적어주세요...</p>
+                            <p id="previewPromise" class="text-indigo-600 font-medium postcard-content mb-2"></p>
+                        </div>
+                        
+                        <div class="mt-4 text-right">
+                            <p class="text-sm sm:text-base recipient-sender-text">From. <span id="previewSender" class="font-semibold postcard-content">보내는 사람 이름</span></p>
+                            <p id="previewDate" class="text-xs text-slate-500 mt-1 postcard-content">날짜를 선택해주세요</p>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- 🆕 각 버튼 기능 간단 설명 -->
+                <!-- 사용 방법 -->
                 <div class="mt-4 sm:mt-6 p-3 sm:p-4 bg-blue-50 border-l-4 border-blue-400 text-blue-700 rounded-md shadow">
                     <p class="font-semibold text-sm sm:text-base mb-2 sm:mb-3">📝 사용 방법</p>
                     <div class="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                         <div class="flex items-center">
-                            <span class="mr-2">1️⃣</span>
-                            <strong>테마 선택:</strong> 위에서 마음에 드는 엽서 배경을 먼저 골라주세요
+                            <span class="mr-2">🌸</span>
+                            <strong>계절 선택:</strong> 봄(꽃잎), 여름(파도), 가을(낙엽), 겨울(눈) 중 원하는 계절 효과를 선택하세요
                         </div>
                         <div class="flex items-center">
-                            <span class="mr-2">2️⃣</span>
+                            <span class="mr-2">✍️</span>
                             <strong>내용 입력:</strong> 받는 사람, 보내는 사람, 사랑의 메시지를 적어주세요
                         </div>
                         <div class="flex items-center">
-                            <span class="mr-2">3️⃣</span>
-                            <strong>엽서 확인:</strong> 🎨 버튼으로 미리보기를 업데이트하세요
+                            <span class="mr-2">🎨</span>
+                            <strong>미리보기:</strong> 버튼을 클릭하여 계절 애니메이션과 함께 엽서를 확인하세요
                         </div>
                         <div class="flex items-center">
-                            <span class="mr-2">4️⃣</span>
-                            <strong>저장하기:</strong> 📸 버튼으로 이미지 파일을 다운로드하세요
+                            <span class="mr-2">📸</span>
+                            <strong>저장하기:</strong> 완성된 엽서를 이미지 파일로 다운로드하세요
                         </div>
+                    </div>
+                    <div class="mt-3 p-2 bg-blue-100 rounded-md">
+                        <p class="text-xs font-medium text-blue-800">
+                            ✨ <strong>특별한 기능:</strong> 각 계절마다 고유한 배경 애니메이션이 텍스트 뒤에서 부드럽게 움직여요! 
+                            글자는 선명하게 보이면서 배경에는 아름다운 자연 효과가 펼쳐집니다.
+                        </p>
                     </div>
                     <p class="text-xs mt-2 sm:mt-3 text-blue-600">
                         💡 <strong>팁:</strong> 저장된 이미지는 패들렛이나 클래스팅에 바로 올릴 수 있어요!
@@ -220,12 +373,15 @@
         </div>
         
         <footer class="text-center mt-8 sm:mt-10 pt-4 sm:pt-6 border-t border-slate-200">
-            <p class="text-xs sm:text-sm text-slate-500">스마트폼빌더가 정성껏 만들어 드렸어요! 🤖 | 시스템 폰트 + Tailwind CSS + html2canvas</p>
+            <p class="text-xs sm:text-sm text-slate-500">스마트폼빌더가 정성껏 만들어 드렸어요! 🤖 | 계절별 애니메이션 + Tailwind CSS + html2canvas</p>
         </footer>
     </div>
 
     <script>
         // 전역 변수
+        let currentSeason = 'spring';
+        let animationIntervals = [];
+        
         const recipientInput = document.getElementById('recipient');
         const senderInput = document.getElementById('sender');
         const messageInput = document.getElementById('message');
@@ -240,12 +396,10 @@
         const previewDate = document.getElementById('previewDate');
         const previewThemeIcon = document.getElementById('previewThemeIcon');
 
-        const themeSkyButton = document.getElementById('themeSky');
-        const themePinkButton = document.getElementById('themePink');
-        const themeSunshineButton = document.getElementById('themeSunshine');
-        const themeForestButton = document.getElementById('themeForest');
-        const themeOceanButton = document.getElementById('themeOcean');
-        const themeSunsetButton = document.getElementById('themeSunset');
+        const seasonSpringButton = document.getElementById('seasonSpring');
+        const seasonSummerButton = document.getElementById('seasonSummer');
+        const seasonAutumnButton = document.getElementById('seasonAutumn');
+        const seasonWinterButton = document.getElementById('seasonWinter');
         
         const updatePreviewButton = document.getElementById('updatePreview');
         const downloadImageBtn = document.getElementById('downloadImageBtn');
@@ -253,12 +407,216 @@
         const resetFormButton = document.getElementById('resetForm');
         const statusMessages = document.getElementById('status-messages');
 
+        // 애니메이션 컨테이너들
+        const springPetals = document.getElementById('springPetals');
+        const summerWaves = document.getElementById('summerWaves');
+        const autumnLeaves = document.getElementById('autumnLeaves');
+        const winterSnow = document.getElementById('winterSnow');
+
         // 접근성 - 스크린 리더에 메시지 전달
         function announceToScreenReader(message) {
             statusMessages.textContent = message;
             setTimeout(() => {
                 statusMessages.textContent = '';
             }, 1000);
+        }
+
+        // 모든 애니메이션 정리
+        function clearAllAnimations() {
+            animationIntervals.forEach(interval => clearInterval(interval));
+            animationIntervals = [];
+            springPetals.innerHTML = '';
+            summerWaves.innerHTML = '';
+            autumnLeaves.innerHTML = '';
+            winterSnow.innerHTML = '';
+            
+            // 모든 애니메이션 컨테이너 숨기기
+            springPetals.style.display = 'none';
+            summerWaves.style.display = 'none';
+            autumnLeaves.style.display = 'none';
+            winterSnow.style.display = 'none';
+        }
+
+        // 🌸 봄 - 꽃잎 흩날리기 애니메이션
+        function startSpringAnimation() {
+            clearAllAnimations();
+            springPetals.style.display = 'block';
+            
+            const createPetal = () => {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                petal.style.animationDelay = Math.random() * 2 + 's';
+                springPetals.appendChild(petal);
+                
+                setTimeout(() => {
+                    if (petal.parentNode) {
+                        petal.parentNode.removeChild(petal);
+                    }
+                }, 7000);
+            };
+            
+            // 초기 꽃잎들 생성
+            for (let i = 0; i < 6; i++) {
+                setTimeout(createPetal, i * 500);
+            }
+            
+            // 지속적으로 꽃잎 생성
+            const interval = setInterval(createPetal, 1500);
+            animationIntervals.push(interval);
+        }
+
+        // 🌊 여름 - 파도 애니메이션
+        function startSummerAnimation() {
+            clearAllAnimations();
+            summerWaves.style.display = 'block';
+            
+            const createWave = (delay) => {
+                const wave = document.createElement('div');
+                wave.className = 'wave';
+                wave.style.animationDuration = '4s';
+                wave.style.animationDelay = delay + 's';
+                summerWaves.appendChild(wave);
+            };
+            
+            // 여러 개의 파도 생성
+            createWave(0);
+            createWave(1);
+            createWave(2);
+        }
+
+        // 🍂 가을 - 낙엽 떨어지기 애니메이션
+        function startAutumnAnimation() {
+            clearAllAnimations();
+            autumnLeaves.style.display = 'block';
+            
+            const leafEmojis = ['🍂', '🍁', '🌿'];
+            const leafColors = ['#ea580c', '#dc2626', '#ca8a04'];
+            
+            const createLeaf = () => {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                const leafType = Math.random();
+                
+                if (leafType < 0.7) {
+                    leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
+                } else {
+                    leaf.innerHTML = '●';
+                    leaf.style.color = leafColors[Math.floor(Math.random() * leafColors.length)];
+                    leaf.style.fontSize = '12px';
+                }
+                
+                leaf.style.left = Math.random() * 100 + '%';
+                leaf.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                leaf.style.animationDelay = Math.random() * 2 + 's';
+                autumnLeaves.appendChild(leaf);
+                
+                setTimeout(() => {
+                    if (leaf.parentNode) {
+                        leaf.parentNode.removeChild(leaf);
+                    }
+                }, 8000);
+            };
+            
+            // 초기 낙엽들 생성
+            for (let i = 0; i < 5; i++) {
+                setTimeout(createLeaf, i * 600);
+            }
+            
+            // 지속적으로 낙엽 생성
+            const interval = setInterval(createLeaf, 2000);
+            animationIntervals.push(interval);
+        }
+
+        // ❄️ 겨울 - 눈 내리기 애니메이션
+        function startWinterAnimation() {
+            clearAllAnimations();
+            winterSnow.style.display = 'block';
+            
+            const snowflakeChars = ['❄', '❅', '✦', '✧', '◦'];
+            
+            const createSnowflake = () => {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.fontSize = (Math.random() * 6 + 10) + 'px';
+                snowflake.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                snowflake.style.animationDelay = Math.random() * 2 + 's';
+                winterSnow.appendChild(snowflake);
+                
+                setTimeout(() => {
+                    if (snowflake.parentNode) {
+                        snowflake.parentNode.removeChild(snowflake);
+                    }
+                }, 10000);
+            };
+            
+            // 초기 눈송이들 생성
+            for (let i = 0; i < 8; i++) {
+                setTimeout(createSnowflake, i * 400);
+            }
+            
+            // 지속적으로 눈송이 생성
+            const interval = setInterval(createSnowflake, 1200);
+            animationIntervals.push(interval);
+        }
+
+        // 계절 테마 적용
+        function applySeason(season) {
+            currentSeason = season;
+            
+            // 기존 계절 클래스 제거
+            postcardPreview.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+            
+            // 계절별 설정
+            const seasonConfigs = {
+                spring: {
+                    class: 'season-spring',
+                    icon: '🌸',
+                    textClass: 'text-pink-700',
+                    animation: startSpringAnimation
+                },
+                summer: {
+                    class: 'season-summer',
+                    icon: '🌊',
+                    textClass: 'text-blue-700',
+                    animation: startSummerAnimation
+                },
+                autumn: {
+                    class: 'season-autumn',
+                    icon: '🍂',
+                    textClass: 'text-orange-700',
+                    animation: startAutumnAnimation
+                },
+                winter: {
+                    class: 'season-winter',
+                    icon: '❄️',
+                    textClass: 'text-gray-700',
+                    animation: startWinterAnimation
+                }
+            };
+            
+            const config = seasonConfigs[season];
+            postcardPreview.classList.add(config.class);
+            previewThemeIcon.textContent = config.icon;
+            
+            // 텍스트 색상 업데이트
+            const textElements = postcardPreview.querySelectorAll('.recipient-sender-text');
+            textElements.forEach(el => {
+                el.classList.remove('text-pink-700', 'text-blue-700', 'text-orange-700', 'text-gray-700');
+                el.classList.add(config.textClass);
+            });
+            
+            // 계절 선택 상태 업데이트
+            document.querySelectorAll('.season-option').forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-season="${season}"]`).classList.add('selected');
+            
+            // 애니메이션 시작
+            config.animation();
+            
+            announceToScreenReader(`${config.icon} ${season} 테마가 적용되었습니다.`);
         }
 
         function setTodayDate() {
@@ -283,21 +641,17 @@
                 previewDate.textContent = '날짜를 선택해주세요';
             }
             
-            // 🆕 동적 텍스트 크기 조정
             adjustTextSizeBasedOnContent();
             announceToScreenReader('엽서 내용이 업데이트되었습니다.');
         }
 
-        // 🆕 모바일/데스크톱 고려한 텍스트 크기 자동 조정
         function adjustTextSizeBasedOnContent() {
             const messageLength = messageInput.value.length;
             const promiseLength = promiseInput.value.length;
-            const isMobile = window.innerWidth < 640; // sm 브레이크포인트
+            const isMobile = window.innerWidth < 640;
             
-            // 메시지 텍스트 크기 조정 (모바일에서는 더 작은 기준 적용)
             previewMessage.classList.remove('text-lg', 'text-base', 'text-sm', 'text-xs');
             if (isMobile) {
-                // 모바일에서는 더 빨리 작은 글씨로 전환
                 if (messageLength > 150) {
                     previewMessage.classList.add('text-xs');
                 } else if (messageLength > 80) {
@@ -305,10 +659,9 @@
                 } else if (messageLength > 40) {
                     previewMessage.classList.add('text-base');
                 } else {
-                    previewMessage.classList.add('text-base'); // 모바일에서는 최대 text-base
+                    previewMessage.classList.add('text-base');
                 }
             } else {
-                // 데스크톱에서는 기존 로직
                 if (messageLength > 200) {
                     previewMessage.classList.add('text-xs');
                 } else if (messageLength > 120) {
@@ -320,7 +673,6 @@
                 }
             }
             
-            // 약속 텍스트 크기 조정
             previewPromise.classList.remove('text-base', 'text-sm', 'text-xs');
             if (isMobile) {
                 if (promiseLength > 60) {
@@ -328,7 +680,7 @@
                 } else if (promiseLength > 30) {
                     previewPromise.classList.add('text-sm');
                 } else {
-                    previewPromise.classList.add('text-sm'); // 모바일에서는 최대 text-sm
+                    previewPromise.classList.add('text-sm');
                 }
             } else {
                 if (promiseLength > 100) {
@@ -340,28 +692,8 @@
                 }
             }
         }
-        
-        function applyTheme(themeClass, icon, recipientSenderClass) {
-            // 기존 테마 클래스 제거
-            postcardPreview.classList.remove('theme-sky', 'theme-pink', 'theme-sunshine', 'theme-forest', 'theme-ocean', 'theme-sunset');
-            postcardPreview.classList.add(themeClass);
-            previewThemeIcon.textContent = icon;
-            
-            // 텍스트 색상 업데이트
-            const textElements = postcardPreview.querySelectorAll('.recipient-sender-text');
-            textElements.forEach(el => {
-                el.classList.remove('text-sky-700', 'text-pink-700', 'text-amber-700', 'text-green-700', 'text-cyan-700', 'text-purple-700');
-                el.classList.add(recipientSenderClass);
-            });
-            
-            // 테마 선택 상태 업데이트
-            document.querySelectorAll('.theme-option').forEach(btn => btn.classList.remove('selected'));
-            document.querySelector(`[data-theme="${themeClass.replace('theme-', '')}"]`).classList.add('selected');
-            
-            announceToScreenReader(`${icon} 테마가 적용되었습니다.`);
-        }
 
-        // 🆕 안정적인 이미지 다운로드 기능 (완전 개선)
+        // 이미지 다운로드 기능
         async function downloadPostcardAsImage() {
             const originalText = downloadImageBtn.innerHTML;
             downloadImageBtn.innerHTML = '<span class="mr-2">⏳</span>이미지 생성 중...';
@@ -371,89 +703,64 @@
             announceToScreenReader('엽서 이미지 생성을 시작합니다.');
             
             try {
-                // html2canvas 라이브러리 로딩 확인
                 if (typeof html2canvas === 'undefined') {
                     throw new Error('이미지 생성 라이브러리가 로드되지 않았습니다. 페이지를 새로고침해주세요.');
                 }
                 
-                // 엽서 미리보기 내용 업데이트
                 updatePostcardPreview();
+                await new Promise(resolve => setTimeout(resolve, 500));
                 
-                // 🆕 시스템 폰트 사용으로 대기시간 단축
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                // 🆕 엘리먼트 가시성 확인
                 if (!postcardPreview || postcardPreview.offsetWidth === 0) {
                     throw new Error('엽서를 먼저 확인해주세요. 미리보기가 표시되지 않았습니다.');
                 }
 
-                console.log('캡처 시작 - 엘리먼트 크기:', postcardPreview.offsetWidth, 'x', postcardPreview.offsetHeight);
-
                 const canvas = await html2canvas(postcardPreview, { 
-                    scale: 2, // 고해상도
+                    scale: 2,
                     useCORS: true, 
                     allowTaint: false,
-                    logging: true, // 🆕 디버깅을 위해 로깅 활성화
+                    logging: false,
                     backgroundColor: '#ffffff',
                     width: postcardPreview.offsetWidth,
                     height: postcardPreview.offsetHeight,
                     scrollX: 0,
                     scrollY: 0,
-                    letterRendering: true, // 🆕 텍스트 렌더링 개선
-                    imageTimeout: 15000, // 🆕 이미지 로딩 타임아웃
-                    removeContainer: true, // 🆕 컨테이너 정리
+                    letterRendering: true,
+                    imageTimeout: 15000,
+                    removeContainer: true,
                     onclone: function(clonedDoc) {
-                        console.log('엘리먼트 복제 중...');
-                        
-                        // 스크린 리더 전용 요소 제거
                         const srOnlyElements = clonedDoc.querySelectorAll('.sr-only');
                         srOnlyElements.forEach(el => el.remove());
                         
-                        // 🆕 클론된 엘리먼트 스타일 강화
                         const clonedPreview = clonedDoc.getElementById('postcardPreview');
                         if (clonedPreview) {
                             clonedPreview.style.height = 'auto';
                             clonedPreview.style.minHeight = postcardPreview.offsetHeight + 'px';
                             clonedPreview.style.overflow = 'visible';
-                            clonedPreview.style.display = 'flex';
-                            clonedPreview.style.flexDirection = 'column';
-                            clonedPreview.style.position = 'relative';
-                            
-                            // 🆕 시스템 폰트 강제 적용 (웹폰트 문제 해결)
                             clonedPreview.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif';
                             
-                            // 🆕 모든 하위 요소에도 시스템 폰트 적용
                             const allElements = clonedPreview.querySelectorAll('*');
                             allElements.forEach(el => {
                                 el.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif';
                             });
                         }
                         
-                        console.log('엘리먼트 복제 완료');
                         return clonedDoc;
                     }
                 });
                 
-                console.log('캔버스 생성 완료 - 크기:', canvas.width, 'x', canvas.height);
-                
-                // 🆕 캔버스 유효성 검사
                 if (canvas.width === 0 || canvas.height === 0) {
                     throw new Error('이미지 생성에 실패했습니다. 엘리먼트가 제대로 표시되지 않았습니다.');
                 }
                 
-                // 이미지 데이터 생성
                 const imgData = canvas.toDataURL('image/png', 1.0);
                 
-                // 🆕 이미지 데이터 유효성 검사
                 if (imgData === 'data:,' || imgData.length < 100) {
                     throw new Error('이미지 데이터 생성에 실패했습니다.');
                 }
                 
-                // 파일명 생성 (받는 사람 이름 기반)
                 const recipientName = recipientInput.value || '가족';
-                const fileName = `${recipientName.replace(/[^\w가-힣ㄱ-ㅎㅏ-ㅣ一-龠ぁ-ゔァ-ヴー]/g, '_')}_사랑엽서.png`;
+                const fileName = `${recipientName.replace(/[^\w가-힣ㄱ-ㅎㅏ-ㅣ一-龠ぁ-ゔァ-ヴー]/g, '_')}_계절엽서_${currentSeason}.png`;
                 
-                // 다운로드 링크 생성
                 const downloadLink = document.createElement('a');
                 downloadLink.href = imgData;
                 downloadLink.download = fileName;
@@ -462,12 +769,11 @@
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
                 
-                console.log('이미지 다운로드 완료');
                 announceToScreenReader('엽서 이미지가 성공적으로 저장되었습니다.');
-                alert('🎉 엽서 이미지가 성공적으로 저장되었습니다!\n긴 내용도 모두 포함되어 다운로드 폴더에 저장되었어요.');
+                alert(`🎉 ${currentSeason} 테마 엽서 이미지가 성공적으로 저장되었습니다!\n아름다운 계절 애니메이션과 함께 다운로드 폴더에 저장되었어요.`);
                 
             } catch (error) {
-                console.error("이미지 생성 상세 오류:", error);
+                console.error("이미지 생성 오류:", error);
                 
                 let errorMessage = "이미지 생성 중 오류가 발생했습니다.\n\n";
                 
@@ -475,8 +781,6 @@
                     errorMessage += "해결 방법: 페이지를 새로고침하거나 다른 브라우저에서 시도해보세요.";
                 } else if (error.message.includes('엘리먼트')) {
                     errorMessage += "해결 방법: '엽서 확인하기' 버튼을 먼저 눌러 미리보기를 확인한 후 다시 시도해보세요.";
-                } else if (error.message.includes('데이터')) {
-                    errorMessage += "해결 방법: 내용을 조금 수정하거나 다른 테마를 선택한 후 다시 시도해보세요.";
                 } else {
                     errorMessage += "해결 방법:\n";
                     errorMessage += "1. '엽서 확인하기' 버튼을 먼저 클릭해주세요\n";
@@ -500,13 +804,11 @@
         updatePreviewButton.addEventListener('click', updatePostcardPreview);
         downloadImageBtn.addEventListener('click', downloadPostcardAsImage);
         
-        // 🆕 새로운 테마 선택 이벤트 리스너들
-        themeSkyButton.addEventListener('click', () => applyTheme('theme-sky', '☁️', 'text-sky-700'));
-        themePinkButton.addEventListener('click', () => applyTheme('theme-pink', '💖', 'text-pink-700'));
-        themeSunshineButton.addEventListener('click', () => applyTheme('theme-sunshine', '☀️', 'text-amber-700'));
-        themeForestButton.addEventListener('click', () => applyTheme('theme-forest', '🌳', 'text-green-700'));
-        themeOceanButton.addEventListener('click', () => applyTheme('theme-ocean', '🌊', 'text-cyan-700'));
-        themeSunsetButton.addEventListener('click', () => applyTheme('theme-sunset', '🌅', 'text-purple-700'));
+        // 계절 선택 이벤트 리스너들
+        seasonSpringButton.addEventListener('click', () => applySeason('spring'));
+        seasonSummerButton.addEventListener('click', () => applySeason('summer'));
+        seasonAutumnButton.addEventListener('click', () => applySeason('autumn'));
+        seasonWinterButton.addEventListener('click', () => applySeason('winter'));
 
         copyContentButton.addEventListener('click', () => {
             const dateValue = dateInput.value;
@@ -516,12 +818,20 @@
                 formattedDate = `${year}년 ${month}월 ${day}일`;
             }
 
+            const seasonNames = {
+                spring: '봄 (꽃잎 흩날림)',
+                summer: '여름 (파도 움직임)',
+                autumn: '가을 (낙엽 떨어짐)',
+                winter: '겨울 (눈 내림)'
+            };
+
             const contentToCopy = `
-가족 사랑 엽서 ❤️
+계절 가족 사랑 엽서 ❤️
 --------------------
 받는 사람: ${recipientInput.value}
 보내는 사람: ${senderInput.value}
 작성 날짜: ${formattedDate}
+선택한 계절: ${seasonNames[currentSeason]}
 
 [사랑의 메시지]
 ${messageInput.value}
@@ -549,21 +859,25 @@ ${promiseInput.value}
                 messageInput.value = '';
                 promiseInput.value = '';
                 setTodayDate();
-                applyTheme('theme-sky', '☁️', 'text-sky-700');
+                
+                applySeason('spring');
                 updatePostcardPreview();
                 alert('모든 내용이 지워졌어요. 새로운 마음으로 엽서를 다시 작성해보세요! 😊');
                 announceToScreenReader('양식이 초기화되었습니다.');
             }
         });
 
-        // 초기 테마 적용 (기본값: 하늘 테마)
-        applyTheme('theme-sky', '☁️', 'text-sky-700');
+        // 초기 설정
+        applySeason('spring');
         
-        // 🆕 화면 크기 변경 시 텍스트 크기 재조정
+        // 화면 크기 변경 시 텍스트 크기 재조정
         window.addEventListener('resize', adjustTextSizeBasedOnContent);
         
+        // 페이지 언로드 시 애니메이션 정리
+        window.addEventListener('beforeunload', clearAllAnimations);
+        
         // 페이지 로드 완료 알림
-        announceToScreenReader('가족 사랑 엽서 만들기 페이지가 로드되었습니다. 이미지 자동 저장 기능이 추가되었습니다.');
+        announceToScreenReader('계절별 애니메이션 가족 사랑 엽서 만들기 페이지가 로드되었습니다.');
     </script>
 </body>
 </html>
