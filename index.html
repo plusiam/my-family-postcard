@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 가족 사랑 엽서 만들기 💖</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif;
+        }
+        
+        /* 엽서 테마별 스타일 확장 */
+        .theme-sky {
+            background-color: #e0f2fe;
+            border: 5px solid #7dd3fc;
+        }
+        .theme-sky .theme-icon { color: #0ea5e9; }
+        .theme-sky .recipient-sender-text { color: #0369a1; }
+
+        .theme-pink {
+            background-color: #fce7f3;
+            border: 5px solid #f9a8d4;
+        }
+        .theme-pink .theme-icon { color: #ec4899; }
+        .theme-pink .recipient-sender-text { color: #be185d; }
+
+        .theme-sunshine {
+            background-color: #fef9c3;
+            border: 5px solid #fde047;
+        }
+        .theme-sunshine .theme-icon { color: #f59e0b; }
+        .theme-sunshine .recipient-sender-text { color: #b45309; }
+        
+        .theme-forest {
+            background-color: #f0fdf4;
+            border: 5px solid #86efac;
+        }
+        .theme-forest .theme-icon { color: #16a34a; }
+        .theme-forest .recipient-sender-text { color: #15803d; }
+        
+        .theme-ocean {
+            background-color: #ecfeff;
+            border: 5px solid #67e8f9;
+        }
+        .theme-ocean .theme-icon { color: #0891b2; }
+        .theme-ocean .recipient-sender-text { color: #0e7490; }
+        
+        .theme-sunset {
+            background: linear-gradient(135deg, #fed7d7, #fbb6ce, #d6f5d6);
+            border: 5px solid #f687b3;
+        }
+        .theme-sunset .theme-icon { color: #d53f8c; }
+        .theme-sunset .recipient-sender-text { color: #97266d; }
+        
+        /* 테마 선택 상태 표시 */
+        .theme-option.selected {
+            border-color: currentColor;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .postcard-content {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        /* 스크린 리더 전용 텍스트 */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-100 via-purple-50 to-sky-100 flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="container mx-auto max-w-4xl bg-white shadow-2xl rounded-xl p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-6 sm:mb-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-sky-500">💖 나만의 가족 사랑 엽서 💖</h1>
+            <p class="text-slate-600 mt-2 sm:mt-3 text-sm md:text-base">소중한 가족에게 사랑하는 마음을 담아 세상에 하나뿐인 엽서를 만들어보세요!</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+            <div class="bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md">
+                <!-- 🆕 테마 선택을 맨 위로 이동 -->
+                <div class="mb-6 sm:mb-8">
+                    <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-4">🎨 엽서 테마 먼저 골라보세요!</h2>
+                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                        <button id="themeSky" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-sky-400 transition-all duration-200 bg-sky-100" data-theme="sky">
+                            <span class="text-2xl mb-1">☁️</span>
+                            <span class="text-xs font-medium text-sky-700">하늘</span>
+                        </button>
+                        <button id="themePink" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-pink-400 transition-all duration-200 bg-pink-100" data-theme="pink">
+                            <span class="text-2xl mb-1">💖</span>
+                            <span class="text-xs font-medium text-pink-700">핑크</span>
+                        </button>
+                        <button id="themeSunshine" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-yellow-400 transition-all duration-200 bg-yellow-100" data-theme="sunshine">
+                            <span class="text-2xl mb-1">☀️</span>
+                            <span class="text-xs font-medium text-yellow-700">햇살</span>
+                        </button>
+                        <button id="themeForest" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-green-400 transition-all duration-200 bg-green-100" data-theme="forest">
+                            <span class="text-2xl mb-1">🌳</span>
+                            <span class="text-xs font-medium text-green-700">숲속</span>
+                        </button>
+                        <button id="themeOcean" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-cyan-400 transition-all duration-200 bg-cyan-100" data-theme="ocean">
+                            <span class="text-2xl mb-1">🌊</span>
+                            <span class="text-xs font-medium text-cyan-700">바다</span>
+                        </button>
+                        <button id="themeSunset" class="theme-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-purple-400 transition-all duration-200 bg-purple-100" data-theme="sunset">
+                            <span class="text-2xl mb-1">🌅</span>
+                            <span class="text-xs font-medium text-purple-700">석양</span>
+                        </button>
+                    </div>
+                </div>
+
+                <h3 class="text-xl sm:text-2xl font-semibold text-slate-700 mb-4 sm:mb-6">✍️ 엽서 내용 입력하기</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label for="recipient" class="block text-sm font-medium text-slate-700">💌 받는 사람:</label>
+                        <input type="text" id="recipient" name="recipient" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 사랑하는 엄마 아빠께">
+                    </div>
+                    <div>
+                        <label for="sender" class="block text-sm font-medium text-slate-700">✍️ 보내는 사람:</label>
+                        <input type="text" id="sender" name="sender" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 귀염둥이 OOO 올림">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-slate-700">💕 사랑의 메시지:</label>
+                        <textarea id="message" name="message" rows="5" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="가족에게 전하고 싶은 따뜻한 마음을 자유롭게 적어보세요."></textarea>
+                    </div>
+                    <div>
+                        <label for="promise" class="block text-sm font-medium text-slate-700">🤝 가족을 위해 내가 꼭 실천할 약속:</label>
+                        <textarea id="promise" name="promise" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 부모님 말씀 잘 듣고, 동생과 사이좋게 지내기"></textarea>
+                    </div>
+                    <div>
+                        <label for="date" class="block text-sm font-medium text-slate-700">📅 작성 날짜:</label>
+                        <input type="date" id="date" name="date" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm">
+                    </div>
+                </div>
+
+                <div class="mt-6 sm:mt-8 space-y-3">
+                    <button id="updatePreview" class="w-full flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base"><span class="mr-2 text-lg">🎨</span>엽서 확인하기</button>
+                    
+                    <!-- 🆕 새로운 이미지 다운로드 버튼 -->
+                    <button id="downloadImageBtn" class="w-full flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
+                        <span class="mr-2 text-lg">📸</span>엽서 이미지로 저장하기
+                    </button>
+                    
+                    <button id="copyContent" class="w-full flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base"><span class="mr-2 text-lg">📋</span>내용 전체 복사</button>
+                    <button id="resetForm" class="w-full flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base"><span class="mr-2 text-lg">🔄</span>새로 쓰기</button>
+                </div>
+                
+                <!-- 상태 메시지 영역 -->
+                <div id="status-messages" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+            </div>
+
+            <div class="bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md flex flex-col">
+                <h2 class="text-xl sm:text-2xl font-semibold text-slate-700 mb-4 sm:mb-6 text-center">✨ 완성된 엽서 미리보기 ✨</h2>
+                <div id="postcardPreview" class="theme-sky w-full min-h-[400px] sm:min-h-[500px] p-4 sm:p-6 rounded-lg shadow-inner flex flex-col transition-all duration-300 ease-in-out relative">
+                    <div class="absolute top-2 right-2 sm:top-4 sm:right-4 text-2xl sm:text-4xl theme-icon" id="previewThemeIcon">☁️</div>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm sm:text-base recipient-sender-text">To. <span id="previewRecipient" class="font-semibold postcard-content">받는 사람 이름</span></p>
+                    </div>
+                    
+                    <div class="text-center flex-grow py-2 px-1">
+                        <p id="previewMessage" class="text-slate-800 leading-relaxed postcard-content mb-3 sm:mb-4">따뜻한 사랑의 메시지를 여기에 적어주세요...</p>
+                        <p id="previewPromise" class="text-indigo-600 font-medium postcard-content"></p>
+                    </div>
+                    
+                    <div class="mt-4 text-right">
+                        <p class="text-sm sm:text-base recipient-sender-text">From. <span id="previewSender" class="font-semibold postcard-content">보내는 사람 이름</span></p>
+                        <p id="previewDate" class="text-xs text-slate-500 mt-1 postcard-content">날짜를 선택해주세요</p>
+                    </div>
+                </div>
+                
+                <!-- 🆕 각 버튼 기능 간단 설명 -->
+                <div class="mt-4 sm:mt-6 p-3 sm:p-4 bg-blue-50 border-l-4 border-blue-400 text-blue-700 rounded-md shadow">
+                    <p class="font-semibold text-sm sm:text-base mb-2 sm:mb-3">📝 사용 방법</p>
+                    <div class="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+                        <div class="flex items-center">
+                            <span class="mr-2">1️⃣</span>
+                            <strong>테마 선택:</strong> 위에서 마음에 드는 엽서 배경을 먼저 골라주세요
+                        </div>
+                        <div class="flex items-center">
+                            <span class="mr-2">2️⃣</span>
+                            <strong>내용 입력:</strong> 받는 사람, 보내는 사람, 사랑의 메시지를 적어주세요
+                        </div>
+                        <div class="flex items-center">
+                            <span class="mr-2">3️⃣</span>
+                            <strong>엽서 확인:</strong> 🎨 버튼으로 미리보기를 업데이트하세요
+                        </div>
+                        <div class="flex items-center">
+                            <span class="mr-2">4️⃣</span>
+                            <strong>저장하기:</strong> 📸 버튼으로 이미지 파일을 다운로드하세요
+                        </div>
+                    </div>
+                    <p class="text-xs mt-2 sm:mt-3 text-blue-600">
+                        💡 <strong>팁:</strong> 저장된 이미지는 패들렛이나 클래스팅에 바로 올릴 수 있어요!
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-8 sm:mt-10 pt-4 sm:pt-6 border-t border-slate-200">
+            <p class="text-xs sm:text-sm text-slate-500">스마트폼빌더가 정성껏 만들어 드렸어요! 🤖 | 시스템 폰트 + Tailwind CSS + html2canvas</p>
+        </footer>
+    </div>
+
+    <script>
+        // 전역 변수
+        const recipientInput = document.getElementById('recipient');
+        const senderInput = document.getElementById('sender');
+        const messageInput = document.getElementById('message');
+        const promiseInput = document.getElementById('promise');
+        const dateInput = document.getElementById('date');
+
+        const postcardPreview = document.getElementById('postcardPreview');
+        const previewRecipient = document.getElementById('previewRecipient');
+        const previewSender = document.getElementById('previewSender');
+        const previewMessage = document.getElementById('previewMessage');
+        const previewPromise = document.getElementById('previewPromise');
+        const previewDate = document.getElementById('previewDate');
+        const previewThemeIcon = document.getElementById('previewThemeIcon');
+
+        const themeSkyButton = document.getElementById('themeSky');
+        const themePinkButton = document.getElementById('themePink');
+        const themeSunshineButton = document.getElementById('themeSunshine');
+        const themeForestButton = document.getElementById('themeForest');
+        const themeOceanButton = document.getElementById('themeOcean');
+        const themeSunsetButton = document.getElementById('themeSunset');
+        
+        const updatePreviewButton = document.getElementById('updatePreview');
+        const downloadImageBtn = document.getElementById('downloadImageBtn');
+        const copyContentButton = document.getElementById('copyContent');
+        const resetFormButton = document.getElementById('resetForm');
+        const statusMessages = document.getElementById('status-messages');
+
+        // 접근성 - 스크린 리더에 메시지 전달
+        function announceToScreenReader(message) {
+            statusMessages.textContent = message;
+            setTimeout(() => {
+                statusMessages.textContent = '';
+            }, 1000);
+        }
+
+        function setTodayDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        function updatePostcardPreview() {
+            previewRecipient.textContent = recipientInput.value || '받는 사람 이름';
+            previewSender.textContent = senderInput.value || '보내는 사람 이름';
+            previewMessage.textContent = messageInput.value || '따뜻한 사랑의 메시지를 여기에 적어주세요...';
+            previewPromise.textContent = promiseInput.value ? `👨‍👩‍👧‍👦 실천 약속: ${promiseInput.value}` : '';
+            
+            const dateValue = dateInput.value;
+            if (dateValue) {
+                const [year, month, day] = dateValue.split('-');
+                previewDate.textContent = `${year}년 ${month}월 ${day}일`;
+            } else {
+                previewDate.textContent = '날짜를 선택해주세요';
+            }
+            
+            // 🆕 동적 텍스트 크기 조정
+            adjustTextSizeBasedOnContent();
+            announceToScreenReader('엽서 내용이 업데이트되었습니다.');
+        }
+
+        // 🆕 모바일/데스크톱 고려한 텍스트 크기 자동 조정
+        function adjustTextSizeBasedOnContent() {
+            const messageLength = messageInput.value.length;
+            const promiseLength = promiseInput.value.length;
+            const isMobile = window.innerWidth < 640; // sm 브레이크포인트
+            
+            // 메시지 텍스트 크기 조정 (모바일에서는 더 작은 기준 적용)
+            previewMessage.classList.remove('text-lg', 'text-base', 'text-sm', 'text-xs');
+            if (isMobile) {
+                // 모바일에서는 더 빨리 작은 글씨로 전환
+                if (messageLength > 150) {
+                    previewMessage.classList.add('text-xs');
+                } else if (messageLength > 80) {
+                    previewMessage.classList.add('text-sm');
+                } else if (messageLength > 40) {
+                    previewMessage.classList.add('text-base');
+                } else {
+                    previewMessage.classList.add('text-base'); // 모바일에서는 최대 text-base
+                }
+            } else {
+                // 데스크톱에서는 기존 로직
+                if (messageLength > 200) {
+                    previewMessage.classList.add('text-xs');
+                } else if (messageLength > 120) {
+                    previewMessage.classList.add('text-sm');
+                } else if (messageLength > 60) {
+                    previewMessage.classList.add('text-base');
+                } else {
+                    previewMessage.classList.add('text-lg');
+                }
+            }
+            
+            // 약속 텍스트 크기 조정
+            previewPromise.classList.remove('text-base', 'text-sm', 'text-xs');
+            if (isMobile) {
+                if (promiseLength > 60) {
+                    previewPromise.classList.add('text-xs');
+                } else if (promiseLength > 30) {
+                    previewPromise.classList.add('text-sm');
+                } else {
+                    previewPromise.classList.add('text-sm'); // 모바일에서는 최대 text-sm
+                }
+            } else {
+                if (promiseLength > 100) {
+                    previewPromise.classList.add('text-xs');
+                } else if (promiseLength > 50) {
+                    previewPromise.classList.add('text-sm');
+                } else {
+                    previewPromise.classList.add('text-base');
+                }
+            }
+        }
+        
+        function applyTheme(themeClass, icon, recipientSenderClass) {
+            // 기존 테마 클래스 제거
+            postcardPreview.classList.remove('theme-sky', 'theme-pink', 'theme-sunshine', 'theme-forest', 'theme-ocean', 'theme-sunset');
+            postcardPreview.classList.add(themeClass);
+            previewThemeIcon.textContent = icon;
+            
+            // 텍스트 색상 업데이트
+            const textElements = postcardPreview.querySelectorAll('.recipient-sender-text');
+            textElements.forEach(el => {
+                el.classList.remove('text-sky-700', 'text-pink-700', 'text-amber-700', 'text-green-700', 'text-cyan-700', 'text-purple-700');
+                el.classList.add(recipientSenderClass);
+            });
+            
+            // 테마 선택 상태 업데이트
+            document.querySelectorAll('.theme-option').forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-theme="${themeClass.replace('theme-', '')}"]`).classList.add('selected');
+            
+            announceToScreenReader(`${icon} 테마가 적용되었습니다.`);
+        }
+
+        // 🆕 안정적인 이미지 다운로드 기능 (완전 개선)
+        async function downloadPostcardAsImage() {
+            const originalText = downloadImageBtn.innerHTML;
+            downloadImageBtn.innerHTML = '<span class="mr-2">⏳</span>이미지 생성 중...';
+            downloadImageBtn.disabled = true;
+            downloadImageBtn.classList.add('loading');
+            
+            announceToScreenReader('엽서 이미지 생성을 시작합니다.');
+            
+            try {
+                // html2canvas 라이브러리 로딩 확인
+                if (typeof html2canvas === 'undefined') {
+                    throw new Error('이미지 생성 라이브러리가 로드되지 않았습니다. 페이지를 새로고침해주세요.');
+                }
+                
+                // 엽서 미리보기 내용 업데이트
+                updatePostcardPreview();
+                
+                // 🆕 시스템 폰트 사용으로 대기시간 단축
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                // 🆕 엘리먼트 가시성 확인
+                if (!postcardPreview || postcardPreview.offsetWidth === 0) {
+                    throw new Error('엽서를 먼저 확인해주세요. 미리보기가 표시되지 않았습니다.');
+                }
+
+                console.log('캡처 시작 - 엘리먼트 크기:', postcardPreview.offsetWidth, 'x', postcardPreview.offsetHeight);
+
+                const canvas = await html2canvas(postcardPreview, { 
+                    scale: 2, // 고해상도
+                    useCORS: true, 
+                    allowTaint: false,
+                    logging: true, // 🆕 디버깅을 위해 로깅 활성화
+                    backgroundColor: '#ffffff',
+                    width: postcardPreview.offsetWidth,
+                    height: postcardPreview.offsetHeight,
+                    scrollX: 0,
+                    scrollY: 0,
+                    letterRendering: true, // 🆕 텍스트 렌더링 개선
+                    imageTimeout: 15000, // 🆕 이미지 로딩 타임아웃
+                    removeContainer: true, // 🆕 컨테이너 정리
+                    onclone: function(clonedDoc) {
+                        console.log('엘리먼트 복제 중...');
+                        
+                        // 스크린 리더 전용 요소 제거
+                        const srOnlyElements = clonedDoc.querySelectorAll('.sr-only');
+                        srOnlyElements.forEach(el => el.remove());
+                        
+                        // 🆕 클론된 엘리먼트 스타일 강화
+                        const clonedPreview = clonedDoc.getElementById('postcardPreview');
+                        if (clonedPreview) {
+                            clonedPreview.style.height = 'auto';
+                            clonedPreview.style.minHeight = postcardPreview.offsetHeight + 'px';
+                            clonedPreview.style.overflow = 'visible';
+                            clonedPreview.style.display = 'flex';
+                            clonedPreview.style.flexDirection = 'column';
+                            clonedPreview.style.position = 'relative';
+                            
+                            // 🆕 시스템 폰트 강제 적용 (웹폰트 문제 해결)
+                            clonedPreview.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif';
+                            
+                            // 🆕 모든 하위 요소에도 시스템 폰트 적용
+                            const allElements = clonedPreview.querySelectorAll('*');
+                            allElements.forEach(el => {
+                                el.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif';
+                            });
+                        }
+                        
+                        console.log('엘리먼트 복제 완료');
+                        return clonedDoc;
+                    }
+                });
+                
+                console.log('캔버스 생성 완료 - 크기:', canvas.width, 'x', canvas.height);
+                
+                // 🆕 캔버스 유효성 검사
+                if (canvas.width === 0 || canvas.height === 0) {
+                    throw new Error('이미지 생성에 실패했습니다. 엘리먼트가 제대로 표시되지 않았습니다.');
+                }
+                
+                // 이미지 데이터 생성
+                const imgData = canvas.toDataURL('image/png', 1.0);
+                
+                // 🆕 이미지 데이터 유효성 검사
+                if (imgData === 'data:,' || imgData.length < 100) {
+                    throw new Error('이미지 데이터 생성에 실패했습니다.');
+                }
+                
+                // 파일명 생성 (받는 사람 이름 기반)
+                const recipientName = recipientInput.value || '가족';
+                const fileName = `${recipientName.replace(/[^\w가-힣ㄱ-ㅎㅏ-ㅣ一-龠ぁ-ゔァ-ヴー]/g, '_')}_사랑엽서.png`;
+                
+                // 다운로드 링크 생성
+                const downloadLink = document.createElement('a');
+                downloadLink.href = imgData;
+                downloadLink.download = fileName;
+                downloadLink.style.display = 'none';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                console.log('이미지 다운로드 완료');
+                announceToScreenReader('엽서 이미지가 성공적으로 저장되었습니다.');
+                alert('🎉 엽서 이미지가 성공적으로 저장되었습니다!\n긴 내용도 모두 포함되어 다운로드 폴더에 저장되었어요.');
+                
+            } catch (error) {
+                console.error("이미지 생성 상세 오류:", error);
+                
+                let errorMessage = "이미지 생성 중 오류가 발생했습니다.\n\n";
+                
+                if (error.message.includes('라이브러리')) {
+                    errorMessage += "해결 방법: 페이지를 새로고침하거나 다른 브라우저에서 시도해보세요.";
+                } else if (error.message.includes('엘리먼트')) {
+                    errorMessage += "해결 방법: '엽서 확인하기' 버튼을 먼저 눌러 미리보기를 확인한 후 다시 시도해보세요.";
+                } else if (error.message.includes('데이터')) {
+                    errorMessage += "해결 방법: 내용을 조금 수정하거나 다른 테마를 선택한 후 다시 시도해보세요.";
+                } else {
+                    errorMessage += "해결 방법:\n";
+                    errorMessage += "1. '엽서 확인하기' 버튼을 먼저 클릭해주세요\n";
+                    errorMessage += "2. 페이지를 새로고침한 후 다시 시도해보세요\n";
+                    errorMessage += "3. 다른 브라우저(Chrome, Edge 등)를 사용해보세요";
+                }
+                
+                alert(errorMessage);
+                announceToScreenReader('이미지 생성 중 오류가 발생했습니다.');
+            } finally {
+                downloadImageBtn.innerHTML = originalText;
+                downloadImageBtn.disabled = false;
+                downloadImageBtn.classList.remove('loading');
+            }
+        }
+
+        // 이벤트 리스너 등록
+        setTodayDate();
+        updatePostcardPreview();
+
+        updatePreviewButton.addEventListener('click', updatePostcardPreview);
+        downloadImageBtn.addEventListener('click', downloadPostcardAsImage);
+        
+        // 🆕 새로운 테마 선택 이벤트 리스너들
+        themeSkyButton.addEventListener('click', () => applyTheme('theme-sky', '☁️', 'text-sky-700'));
+        themePinkButton.addEventListener('click', () => applyTheme('theme-pink', '💖', 'text-pink-700'));
+        themeSunshineButton.addEventListener('click', () => applyTheme('theme-sunshine', '☀️', 'text-amber-700'));
+        themeForestButton.addEventListener('click', () => applyTheme('theme-forest', '🌳', 'text-green-700'));
+        themeOceanButton.addEventListener('click', () => applyTheme('theme-ocean', '🌊', 'text-cyan-700'));
+        themeSunsetButton.addEventListener('click', () => applyTheme('theme-sunset', '🌅', 'text-purple-700'));
+
+        copyContentButton.addEventListener('click', () => {
+            const dateValue = dateInput.value;
+            let formattedDate = '날짜 미지정';
+            if (dateValue) {
+                const [year, month, day] = dateValue.split('-');
+                formattedDate = `${year}년 ${month}월 ${day}일`;
+            }
+
+            const contentToCopy = `
+가족 사랑 엽서 ❤️
+--------------------
+받는 사람: ${recipientInput.value}
+보내는 사람: ${senderInput.value}
+작성 날짜: ${formattedDate}
+
+[사랑의 메시지]
+${messageInput.value}
+
+[가족을 위한 나의 약속]
+${promiseInput.value}
+--------------------
+`.trim();
+
+            navigator.clipboard.writeText(contentToCopy)
+                .then(() => {
+                    alert('엽서 내용이 클립보드에 복사되었어요! 원하는 곳에 붙여넣기 하세요. (Ctrl+V 또는 Cmd+V)');
+                    announceToScreenReader('엽서 내용이 클립보드에 복사되었습니다.');
+                })
+                .catch(err => {
+                    console.error('복사 실패: ', err);
+                    alert('앗! 내용 복사에 실패했어요. 브라우저 설정을 확인하거나 다시 시도해주세요.');
+                });
+        });
+
+        resetFormButton.addEventListener('click', () => {
+            if (confirm('정말로 모든 내용을 지우고 처음부터 다시 작성할까요?')) {
+                recipientInput.value = '';
+                senderInput.value = '';
+                messageInput.value = '';
+                promiseInput.value = '';
+                setTodayDate();
+                applyTheme('theme-sky', '☁️', 'text-sky-700');
+                updatePostcardPreview();
+                alert('모든 내용이 지워졌어요. 새로운 마음으로 엽서를 다시 작성해보세요! 😊');
+                announceToScreenReader('양식이 초기화되었습니다.');
+            }
+        });
+
+        // 초기 테마 적용 (기본값: 하늘 테마)
+        applyTheme('theme-sky', '☁️', 'text-sky-700');
+        
+        // 🆕 화면 크기 변경 시 텍스트 크기 재조정
+        window.addEventListener('resize', adjustTextSizeBasedOnContent);
+        
+        // 페이지 로드 완료 알림
+        announceToScreenReader('가족 사랑 엽서 만들기 페이지가 로드되었습니다. 이미지 자동 저장 기능이 추가되었습니다.');
+    </script>
+</body>
+</html>
