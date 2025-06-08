@@ -3,117 +3,1160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✉️ 우리 가족, 행복한 순간 그리기 (v2.3 최종본)</title>
-    
+    <title>마음편지 💝</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; }
-        .feedback-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border-radius: 8px; color: white; font-weight: bold; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-in-out; }
-        #postcardMessagePreview { overflow-y: auto; scrollbar-width: thin; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif;
+        }
+        
+        /* 계절별 엽서 테마 스타일 */
+        .season-spring {
+            background: linear-gradient(135deg, #fce7f3, #f3e8ff, #ecfdf5);
+            border: 5px solid #f9a8d4;
+        }
+        .season-spring .theme-icon { color: #ec4899; }
+        .season-spring .recipient-sender-text { color: #be185d; }
+        /* 봄 추가 장식 */
+        .spring-decorations {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 24px;
+            opacity: 0.7;
+            z-index: 5;
+        }
 
-        @media print {
-            /* '활동 결과 인쇄하기' 버튼 전용 스타일 */
-            .no-print, #activity-form, #printable-worksheet { display: none; }
-            main { border: none; box-shadow: none; padding: 0; margin: 0; }
-            #captureArea { display: block !important; }
+        .season-summer {
+            background: linear-gradient(135deg, #dbeafe, #e0f2fe, #ecfeff);
+            border: 5px solid #38bdf8;
+        }
+        .season-summer .theme-icon { color: #0284c7; }
+        .season-summer .recipient-sender-text { color: #075985; }
+        /* 여름 추가 장식 */
+        .summer-decorations {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 28px;
+            opacity: 0.6;
+            z-index: 5;
+        }
+
+        .season-autumn {
+            background: linear-gradient(135deg, #fed7aa, #fecaca, #fef3c7);
+            border: 5px solid #fb923c;
+        }
+        .season-autumn .theme-icon { color: #ea580c; }
+        .season-autumn .recipient-sender-text { color: #c2410c; }
+        /* 가을 추가 장식 */
+        .autumn-decorations {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-size: 26px;
+            opacity: 0.7;
+            z-index: 5;
+        }
+        
+        .season-winter {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0, #f8fafc);
+            border: 5px solid #94a3b8;
+        }
+        .season-winter .theme-icon { color: #475569; }
+        .season-winter .recipient-sender-text { color: #334155; }
+        /* 겨울 추가 장식 - CSS 오류 수정됨 */
+        .winter-decorations {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            left: 10px; /* 수정: 공백 추가 */
+            display: flex;
+            justify-content: space-between;
+            z-index: 5;
+        }
+        .winter-decorations span {
+            font-size: 20px;
+            opacity: 0.5;
+        }
+        
+        /* 계절 선택 상태 표시 */
+        .season-option.selected {
+            border-color: currentColor;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* 🌸 봄 - 꽃잎 흩날리기 애니메이션 */
+        .spring-petals {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .petal {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(ellipse, #fce7f3, #f9a8d4);
+            border-radius: 50% 0;
+            opacity: 0.7;
+            animation: petalFall linear infinite;
+        }
+        
+        @keyframes petalFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 🌊 여름 - 파도 애니메이션 */
+        .summer-waves {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: -50%;
+            width: 200%;
+            height: 40px;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.3), transparent);
+            border-radius: 50%;
+            animation: waveMove linear infinite;
+        }
+        
+        @keyframes waveMove {
+            0% {
+                transform: translateX(-50%) scaleY(1);
+            }
+            50% {
+                transform: translateX(-25%) scaleY(1.2);
+            }
+            100% {
+                transform: translateX(0%) scaleY(1);
+            }
+        }
+        
+        /* 🍂 가을 - 낙엽 떨어지기 애니메이션 */
+        .autumn-leaves {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .leaf {
+            position: absolute;
+            font-size: 16px;
+            opacity: 0.8;
+            animation: leafFall linear infinite;
+        }
+        
+        @keyframes leafFall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(180deg);
+                opacity: 0;
+            }
+        }
+        
+        /* ❄️ 겨울 - 눈 내리기 애니메이션 */
+        .winter-snow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .snowflake {
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            opacity: 0.9;
+            animation: snowFall linear infinite;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes snowFall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.9;
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 엽서 콘텐츠는 애니메이션보다 위에 표시 */
+        .postcard-content {
+            position: relative;
+            z-index: 10;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .postcard-text-layer {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        /* 스크린 리더 전용 텍스트 */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* 링크 복사 성공 알림 애니메이션 */
+        .copy-success {
+            animation: copySuccess 0.3s ease-in-out;
+        }
+        
+        @keyframes copySuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* 미리보기 전용 모드 스타일 */
+        .preview-only-mode .input-section {
+            display: none !important;
+        }
+        
+        .preview-only-mode .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .preview-only-mode .grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+        
+        .preview-only-mode .preview-section {
+            margin: 0;
+            padding: 1.5rem;
+            background: transparent;
+            box-shadow: none;
+        }
+        
+        .preview-only-mode #postcardPreview {
+            min-height: 400px;
+            height: auto;
+        }
+        
+        .preview-only-mode header {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .preview-only-mode header h1 {
+            font-size: 2rem;
+        }
+        
+        .preview-only-mode footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        .preview-only-mode footer p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        
+        /* 모바일에서 미리보기 모드 최적화 */
+        @media (max-width: 640px) {
+            .preview-only-mode .container {
+                max-width: 100%;
+                padding: 1rem;
+            }
+            
+            .preview-only-mode header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .preview-only-mode .preview-section {
+                padding: 1rem;
+            }
+            
+            .preview-only-mode #postcardPreview {
+                min-height: 350px;
+                padding: 1rem;
+            }
         }
     </style>
 </head>
-<body class="bg-orange-50 flex flex-col items-center min-h-screen p-4 sm:p-8 no-print">
+<body class="bg-gradient-to-br from-pink-100 via-purple-50 to-sky-100 flex flex-col items-center justify-center min-h-screen p-4">
 
-    <main class="w-full max-w-4xl bg-white rounded-2xl shadow-lg p-6 sm:p-10 border-2 border-amber-200">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl sm:text-4xl font-bold text-amber-800">✉️ 우리 가족, 행복한 순간 그리기</h1>
-            <p class="text-stone-600 mt-2">가족과의 소중한 경험을 떠올려 글과 그림으로 표현해봅시다.</p>
+    <div class="container mx-auto max-w-4xl bg-white shadow-2xl rounded-xl p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-6 sm:mb-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-sky-500">💝 마음편지 💝</h1>
+            <p class="text-slate-600 mt-2 sm:mt-3 text-sm md:text-base">소중한 사람에게 마음을 담아 계절의 아름다움과 함께 세상에 하나뿐인 편지를 만들어보세요!</p>
         </header>
 
-        <form id="activity-form" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="space-y-6">
-                <section><h2 class="text-xl font-bold text-orange-600 mb-3 border-b-2 border-orange-200 pb-2">🟡 도입: 생각 열기</h2><fieldset><legend class="font-semibold text-stone-700 block mb-2">Q. 가족과 함께한 행복했던 순간이 있나요?</legend><div class="flex items-center gap-4"><label><input type="radio" name="happy_moment" value="yes" class="mr-1"> 네</label><label><input type="radio" name="happy_moment" value="no" class="mr-1"> 아니요</label></div></fieldset><textarea id="thoughtInput" class="mt-2 w-full p-2 border border-stone-300 rounded-md" placeholder="가장 기억에 남는 장면을 말풍선에 적어 보세요!"></textarea></section>
-                <section><h2 class="text-xl font-bold text-orange-600 mb-3 border-b-2 border-orange-200 pb-2">🔵 활동1: 엽서로 표현해요</h2><label for="imageUpload" class="font-semibold text-stone-700 block mb-2">✍️ 장면에 어울리는 사진을 올려주세요.</label><input type="file" id="imageUpload" accept="image/*" class="w-full text-sm text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-100 file:text-orange-700 hover:file:bg-orange-200"><div class="mt-4"><label for="postcardMessageInput" class="font-semibold text-stone-700 block mb-2">💬 엽서에 남길 말을 자유롭게 적어보세요.</label><textarea id="postcardMessageInput" rows="4" class="w-full p-2 border border-stone-300 rounded-md" placeholder="그때의 감정이나 앞으로 가족과 하고 싶은 일 등을 자유롭게 작성할 수 있어요."></textarea></div></section>
-                <section><h2 class="text-xl font-bold text-orange-600 mb-3 border-b-2 border-orange-200 pb-2">🔴 활동2: 공감 이름표 만들기</h2><div class="space-y-2"><input type="text" id="familyNameInput" class="w-full p-2 border" placeholder="가족 이름 (예: 사랑하는 엄마께)"><textarea id="wordToHearInput" class="w-full p-2 border" placeholder="내가 듣고 싶은 말 (예: 네가 자랑스러워.)" rows="2"></textarea><textarea id="wordToSayInput" class="w-full p-2 border" placeholder="내가 하고 싶은 말 (예: 항상 감사해요!)" rows="2"></textarea></div></section>
-                <section><h2 class="text-xl font-bold text-orange-600 mb-3 border-b-2 border-orange-200 pb-2">🟢 마무리: 감정 정리하기</h2><div id="emoji-selector" role="radiogroup" aria-label="오늘의 기분 선택" class="flex justify-around p-2 bg-stone-100 rounded-lg"><span role="radio" aria-checked="false" tabindex="0" class="text-3xl cursor-pointer p-1 rounded-full">😊</span><span role="radio" aria-checked="false" tabindex="-1" class="text-3xl cursor-pointer p-1 rounded-full">😐</span><span role="radio" aria-checked="false" tabindex="-1" class="text-3xl cursor-pointer p-1 rounded-full">😢</span><span role="radio" aria-checked="false" tabindex="-1" class="text-3xl cursor-pointer p-1 rounded-full">😠</span><span role="radio" aria-checked="false" tabindex="-1" class="text-3xl cursor-pointer p-1 rounded-full">🙌</span></div><textarea id="reasonInput" class="mt-2 w-full p-2 border border-stone-300 rounded-md" placeholder="그렇게 느끼는 이유를 간단히 적어주세요."></textarea></section>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+            <div class="input-section bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md">
+                <div class="mb-6 sm:mb-8">
+                    <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-4">🌈 계절 테마를 선택해보세요!</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button id="seasonSpring" class="season-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-pink-400 transition-all duration-200 bg-pink-100" data-season="spring">
+                            <span class="text-3xl mb-1">🌸</span>
+                            <span class="text-sm font-medium text-pink-700">봄</span>
+                            <span class="text-xs text-pink-600">꽃잎 흩날림</span>
+                        </button>
+                        <button id="seasonSummer" class="season-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-blue-400 transition-all duration-200 bg-blue-100" data-season="summer">
+                            <span class="text-3xl mb-1">🌊</span>
+                            <span class="text-sm font-medium text-blue-700">여름</span>
+                            <span class="text-xs text-blue-600">파도 움직임</span>
+                        </button>
+                        <button id="seasonAutumn" class="season-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-orange-400 transition-all duration-200 bg-orange-100" data-season="autumn">
+                            <span class="text-3xl mb-1">🍂</span>
+                            <span class="text-sm font-medium text-orange-700">가을</span>
+                            <span class="text-xs text-orange-600">낙엽 떨어짐</span>
+                        </button>
+                        <button id="seasonWinter" class="season-option flex flex-col items-center p-3 rounded-xl border-2 border-transparent hover:border-gray-400 transition-all duration-200 bg-gray-100" data-season="winter">
+                            <span class="text-3xl mb-1">❄️</span>
+                            <span class="text-sm font-medium text-gray-700">겨울</span>
+                            <span class="text-xs text-gray-600">눈 내림</span>
+                        </button>
+                    </div>
+                </div>
+
+                <h3 class="text-xl sm:text-2xl font-semibold text-slate-700 mb-4 sm:mb-6">✍️ 편지 내용 입력하기</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label for="recipient" class="block text-sm font-medium text-slate-700">💌 받는 사람:</label>
+                        <input type="text" id="recipient" name="recipient" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 사랑하는 친구에게">
+                    </div>
+                    <div>
+                        <label for="sender" class="block text-sm font-medium text-slate-700">✍️ 보내는 사람:</label>
+                        <input type="text" id="sender" name="sender" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 귀염둥이 OOO 올림">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-slate-700">💕 마음의 메시지:</label>
+                        <textarea id="message" name="message" rows="5" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="소중한 사람에게 전하고 싶은 따뜻한 마음을 자유롭게 적어보세요."></textarea>
+                    </div>
+                    <div>
+                        <label for="promise" class="block text-sm font-medium text-slate-700">🤝 소중한 사람을 위해 내가 꼭 실천할 약속:</label>
+                        <textarea id="promise" name="promise" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="예: 더 자주 안부를 물어보고, 따뜻한 말 건네기"></textarea>
+                    </div>
+                    <div>
+                        <label for="date" class="block text-sm font-medium text-slate-700">📅 작성 날짜:</label>
+                        <input type="date" id="date" name="date" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm">
+                    </div>
+                </div>
+
+                <div class="mt-6 sm:mt-8 space-y-3">
+                    <button id="updatePreview" class="w-full flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
+                        <span class="mr-2 text-lg">🎨</span>편지 확인하기
+                    </button>
+                    
+                    <button id="downloadImageBtn" class="w-full flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
+                        <span class="mr-2 text-lg">📸</span>편지 이미지로 저장하기
+                    </button>
+                    
+                    <button id="copyLinkBtn" class="w-full flex items-center justify-center bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
+                        <span class="mr-2 text-lg">🔗</span>마음편지 링크 복사
+                    </button>
+                    
+                    <button id="copyContent" class="w-full flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
+                        <span class="mr-2 text-lg">📋</span>편지 내용 전체 복사
+                    </button>
+                    
+                    <button id="resetForm" class="w-full flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-md shadow transition-colors duration-150 text-sm sm:text-base">
+                        <span class="mr-2 text-lg">🔄</span>새로 쓰기
+                    </button>
+                </div>
+                
+                <div id="status-messages" aria-live="polite" aria-atomic="true" class="sr-only"></div>
             </div>
-            <div id="captureArea" class="bg-amber-50 p-6 rounded-lg border-2 border-dashed border-amber-300"><h3 class="text-2xl font-bold text-center text-amber-900 mb-4">✨ 나의 활동 결과물 ✨</h3><div class="bg-white p-4 rounded-lg shadow-md aspect-[4/3] flex flex-col"><div id="imagePreview" class="flex-1 bg-stone-200 rounded flex items-center justify-center text-stone-400 text-center">사진을 업로드 해주세요</div><div class="pt-3 text-stone-700 whitespace-pre-wrap break-words h-24"><p id="postcardMessagePreview" class="w-full h-full">여기에 엽서 내용이 표시됩니다.</p></div></div><div class="mt-6 bg-white p-4 rounded-lg shadow-md"><p id="nametagFamily" class="font-bold text-lg text-orange-700">가족 이름</p><div class="mt-2 space-y-2"><p class="text-sm"> 듣고 싶은 말: <span id="nametagToHear" class="text-stone-600">...</span></p><p class="text-sm"> 하고 싶은 말: <span id="nametagToSay" class="text-stone-600">...</span></p></div></div><div class="mt-6 bg-white p-4 rounded-lg shadow-md flex items-center gap-4"><p class="font-bold">오늘 내 기분:</p><p id="finalEmoji" class="text-4xl">?</p><p id="finalReason" class="text-stone-600 text-sm flex-1">...</p></div></div>
-        </form>
 
-        <footer class="mt-10 pt-6 border-t-2 border-amber-200 flex flex-wrap justify-center gap-4">
-            <button id="saveBtn" aria-label="활동 결과물을 이미지 파일로 저장하기" class="px-6 py-3 bg-emerald-500 text-white font-bold rounded-lg shadow-md hover:bg-emerald-600">🖼️ 이미지로 저장</button>
-            <button id="printBtn" aria-label="웹 활동 결과 인쇄하기" class="px-6 py-3 bg-sky-500 text-white font-bold rounded-lg shadow-md hover:bg-sky-600">📝 활동 결과 인쇄하기</button>
-            <button id="teacherPrintBtn" aria-label="선생님용 빈 학습지 PDF로 다운로드" class="px-6 py-3 bg-indigo-500 text-white font-bold rounded-lg shadow-md hover:bg-indigo-600">📄 선생님용 학습지 PDF 다운로드</button>
-            <button id="resetBtn" aria-label="모든 내용 지우고 처음부터 다시 시작하기" class="px-6 py-3 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-red-600">🔄 처음부터 다시하기</button>
+            <div class="preview-section bg-slate-50 p-4 sm:p-6 rounded-lg shadow-md flex flex-col">
+                <h2 class="text-xl sm:text-2xl font-semibold text-slate-700 mb-4 sm:mb-6 text-center">✨ 완성된 편지 미리보기 ✨</h2>
+                <div id="postcardPreview" class="season-spring w-full min-h-[400px] sm:min-h-[500px] p-4 sm:p-6 rounded-lg shadow-inner flex flex-col transition-all duration-300 ease-in-out relative overflow-hidden">
+                    
+                    <!-- 계절별 배경 애니메이션 영역들 -->
+                    <div id="springPetals" class="spring-petals"></div>
+                    <div id="summerWaves" class="summer-waves" style="display: none;"></div>
+                    <div id="autumnLeaves" class="autumn-leaves" style="display: none;"></div>
+                    <div id="winterSnow" class="winter-snow" style="display: none;"></div>
+
+                    <!-- 계절별 정적 장식 요소들 -->
+                    <div id="seasonalDecorations" class="absolute inset-0 pointer-events-none z-5">
+                        <div class="spring-decorations" style="display:none;">🌸🌿</div>
+                        <div class="summer-decorations" style="display:none;">☀️🐚</div>
+                        <div class="autumn-decorations" style="display:none;">🍄🌰</div>
+                        <div class="winter-decorations" style="display:none;">
+                            <span>✨</span>
+                            <span>⭐</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 텍스트 레이어 (애니메이션 위에 표시) -->
+                    <div class="postcard-text-layer flex flex-col h-full">
+                        <div class="absolute top-2 right-2 sm:top-4 sm:right-4 text-2xl sm:text-4xl theme-icon" id="previewThemeIcon">🌸</div>
+                        
+                        <div class="mb-4">
+                            <p class="text-sm sm:text-base recipient-sender-text">To. <span id="previewRecipient" class="font-semibold postcard-content">받는 사람 이름</span></p>
+                        </div>
+                        
+                        <div class="text-center flex-grow py-2 px-1 relative">
+                            <p id="previewMessage" class="text-slate-800 leading-relaxed postcard-content mb-3 sm:mb-4">따뜻한 마음의 메시지를 여기에 적어주세요...</p>
+                            <p id="previewPromise" class="text-indigo-600 font-medium postcard-content mb-2"></p>
+                        </div>
+                        
+                        <div class="mt-4 text-right">
+                            <p class="text-sm sm:text-base recipient-sender-text">From. <span id="previewSender" class="font-semibold postcard-content">보내는 사람 이름</span></p>
+                            <p id="previewDate" class="text-xs text-slate-500 mt-1 postcard-content">날짜를 선택해주세요</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 사용 방법 -->
+                <div class="mt-4 sm:mt-6 p-3 sm:p-4 bg-blue-50 border-l-4 border-blue-400 text-blue-700 rounded-md shadow">
+                    <p class="font-semibold text-sm sm:text-base mb-2 sm:mb-3">📝 사용 방법</p>
+                    <div class="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+                        <div class="flex items-center">
+                            <span class="mr-2">🌸</span>
+                            <strong>계절 선택:</strong> 봄, 여름, 가을, 겨울 중 원하는 계절 효과를 선택하세요.
+                        </div>
+                        <div class="flex items-center">
+                            <span class="mr-2">✍️</span>
+                            <strong>내용 입력:</strong> 받는 사람, 메시지 등을 적으면 실시간으로 미리보기에 반영돼요!
+                        </div>
+                        <div class="flex items-center">
+                            <span class="mr-2">🎨</span>
+                            <strong>미리보기 확인:</strong> '엽서 확인하기' 버튼으로도 업데이트 가능해요.
+                        </div>
+                        <div class="flex items-center">
+                            <span class="mr-2">🔗</span>
+                            <strong>링크 공유:</strong> '마음편지 링크 복사'로 편지만 깔끔하게 보이는 링크를 생성해요!
+                        </div>
+                        <div class="flex items-center">
+                            <span class="mr-2">📸</span>
+                            <strong>이미지 저장:</strong> 완성된 엽서를 이미지 파일로 다운로드하세요. (애니메이션은 현재 보이는 장면으로 저장)
+                        </div>
+                    </div>
+                    <div class="mt-3 p-2 bg-blue-100 rounded-md">
+                        <p class="text-xs font-medium text-blue-800">
+                            ✨ <strong>특별한 기능:</strong> 각 계절마다 고유한 배경 애니메이션과 추가 장식이 텍스트 뒤에서 부드럽게 움직이거나 표시됩니다!
+                        </p>
+                    </div>
+                    <div class="mt-2 p-2 bg-purple-100 rounded-md">
+                        <p class="text-xs font-medium text-purple-800">
+                            🔗 <strong>링크 공유 팁:</strong> '마음편지 링크 복사' 버튼으로 생성된 링크를 공유하면, 받는 사람은 편지 내용과 아름다운 계절 애니메이션만 깔끔하게 볼 수 있어요!
+                        </p>
+                    </div>
+                    <p class="text-xs mt-2 sm:mt-3 text-blue-600">
+                        💡 <strong>팁:</strong> 저장된 이미지는 패들렛이나 클래스팅에 바로 올릴 수 있어요!
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-8 sm:mt-10 pt-4 sm:pt-6 border-t border-slate-200">
+            <p class="text-xs sm:text-sm text-slate-500">
+                만든이 : 룰루랄라 한기쌤 🎓 | 
+                <a href="https://www.facebook.com/playrurulala" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                    페이스북 👥
+                </a>
+            </p>
         </footer>
-    </main>
-
-    <div id="printable-worksheet" class="hidden bg-white p-8 w-[210mm]">
-        <div class="text-center mb-10 border-b-2 pb-4"><h1 class="text-3xl font-bold text-gray-800">✉️ 우리 가족, 행복한 순간 그리기</h1><p class="text-gray-600 mt-2">이름: _______________</p></div>
-        <div class="space-y-12"><section><h2 class="text-xl font-bold text-gray-700 mb-3">🟡 도입: 생각 열기</h2><p class="mb-2"><b>Q.</b> 가족과 함께한 행복했던 순간이 있나요? (해당하는 곳에 O 표시 하세요)</p><p class="ml-4">□ 네 &nbsp;&nbsp;&nbsp;&nbsp; □ 아니요</p><p class="mt-4"><b>👉</b> 가장 기억에 남는 장면을 아래 말풍선에 적어 보세요!</p><div class="mt-2 ml-4 border rounded-xl p-4 h-24 bg-gray-50"></div></section><section><h2 class="text-xl font-bold text-gray-700 mb-3">🔵 활동1: 엽서로 표현해요</h2><p><b>Q.</b> 그 순간을 엽서로 만든다면 어떤 그림을 그리고 싶나요? 아래 네모 칸에 그리거나, 사진을 붙여보세요.</p><div class="w-full h-64 border-2 border-dashed my-4 flex items-center justify-center text-gray-400"><span>[ 그림을 그리거나 사진을 붙이는 곳 ]</span></div><p><b>💬</b> 엽서에 남기고 싶은 말을 자유롭게 적어보세요.</p><div class="mt-2 border-b border-gray-400 h-8"></div><div class="mt-2 border-b border-gray-400 h-8"></div><div class="mt-2 border-b border-gray-400 h-8"></div></section><section><h2 class="text-xl font-bold text-gray-700 mb-3">🔴 활동2: 공감 이름표 만들기</h2><p><b>Q.</b> 가족에게 어떤 말을 듣고, 어떤 말을 하고 싶나요? 아래 이름표를 채워보세요.</p><div class="mt-2 p-4 border rounded-lg bg-gray-50 space-y-3"><p><b>가족 이름:</b> _________________________</p><p><b>내가 듣고 싶은 말:</b> __________________________________________________</p><p><b>내가 하고 싶은 말:</b> __________________________________________________</p></div></section><section><h2 class="text-xl font-bold text-gray-700 mb-3">🟢 마무리: 감정 정리하기</h2><p><b>Q.</b> 오늘 활동을 마치며, 지금 내 기분은 어떤가요? 마음에 드는 기분에 O 표시하고 이유를 적어보세요.</p><div class="flex justify-around text-4xl my-4"><span>😊</span><span>😐</span><span>😢</span><span>😠</span><span>🙌</span></div><p><b>이유:</b> _________________________________________________________________</p></section></div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const { jsPDF } = window.jspdf;
+        // 전역 변수
+        let currentSeason = 'spring';
+        let animationIntervals = [];
+        let updateTimeoutId = null; // 디바운스용
+        
+        const recipientInput = document.getElementById('recipient');
+        const senderInput = document.getElementById('sender');
+        const messageInput = document.getElementById('message');
+        const promiseInput = document.getElementById('promise');
+        const dateInput = document.getElementById('date');
+
+        const postcardPreview = document.getElementById('postcardPreview');
+        const previewRecipient = document.getElementById('previewRecipient');
+        const previewSender = document.getElementById('previewSender');
+        const previewMessage = document.getElementById('previewMessage');
+        const previewPromise = document.getElementById('previewPromise');
+        const previewDate = document.getElementById('previewDate');
+        const previewThemeIcon = document.getElementById('previewThemeIcon');
+
+        const seasonSpringButton = document.getElementById('seasonSpring');
+        const seasonSummerButton = document.getElementById('seasonSummer');
+        const seasonAutumnButton = document.getElementById('seasonAutumn');
+        const seasonWinterButton = document.getElementById('seasonWinter');
+        
+        const updatePreviewButton = document.getElementById('updatePreview');
+        const downloadImageBtn = document.getElementById('downloadImageBtn');
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+        const copyContentButton = document.getElementById('copyContent');
+        const resetFormButton = document.getElementById('resetForm');
+        const statusMessages = document.getElementById('status-messages');
+
+        const springPetals = document.getElementById('springPetals');
+        const summerWaves = document.getElementById('summerWaves');
+        const autumnLeaves = document.getElementById('autumnLeaves');
+        const winterSnow = document.getElementById('winterSnow');
+        const seasonalDecorations = document.getElementById('seasonalDecorations');
+
+        // 접근성 - 스크린 리더에 메시지 전달
+        function announceToScreenReader(message) {
+            statusMessages.textContent = message;
+            setTimeout(() => {
+                statusMessages.textContent = '';
+            }, 1000);
+        }
+
+        // 🔗 URL 매개변수에서 엽서 데이터 로드
+        function loadPostcardFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
             
-            // --- 변수 선언 (생략) ---
-            const form=document.getElementById("activity-form"),imageUpload=document.getElementById("imageUpload"),thoughtInput=document.getElementById("thoughtInput"),postcardMessageInput=document.getElementById("postcardMessageInput"),familyNameInput=document.getElementById("familyNameInput"),wordToHearInput=document.getElementById("wordToHearInput"),wordToSayInput=document.getElementById("wordToSayInput"),emojiSelector=document.getElementById("emoji-selector"),emojis=emojiSelector.querySelectorAll('[role="radio"]'),reasonInput=document.getElementById("reasonInput"),imagePreview=document.getElementById("imagePreview"),postcardMessagePreview=document.getElementById("postcardMessagePreview"),nametagFamily=document.getElementById("nametagFamily"),nametagToHear=document.getElementById("nametagToHear"),nametagToSay=document.getElementById("nametagToSay"),finalEmoji=document.getElementById("finalEmoji"),finalReason=document.getElementById("finalReason"),saveBtn=document.getElementById("saveBtn"),resultPrintBtn=document.getElementById("printBtn"),teacherPrintBtn=document.getElementById("teacherPrintBtn"),resetBtn=document.getElementById("resetBtn");
-
-            // --- 함수 정의 (생략) ---
-            const updatePostcardPreview=()=>{postcardMessagePreview.textContent=postcardMessageInput.value||"여기에 엽서 내용이 표시됩니다.",adjustFontSize(postcardMessagePreview,1)},updateNametag=()=>{nametagFamily.textContent=familyNameInput.value||"가족 이름",nametagToHear.textContent=wordToHearInput.value||"...",nametagToSay.textContent=wordToSayInput.value||"..."},updateReason=()=>{finalReason.textContent=reasonInput.value||"..."},adjustFontSize=(e,t=1)=>{e.style.fontSize=`${t}rem`;let o=t;for(;"IntersectionObserver"in window&&e.scrollHeight>e.clientHeight&&o>0.5;)o-=0.05,e.style.fontSize=`${o}rem`},showFeedback=(e,t=!0)=>{const o=document.createElement("div");o.textContent=e,o.className="feedback-toast",o.style.backgroundColor=t?"#28a745":"#dc3545",document.body.appendChild(o),setTimeout(()=>{o.style.opacity="1"},10),setTimeout(()=>{o.style.opacity="0",setTimeout(()=>{o.remove()},500)},3e3)},saveData=()=>{const e={happyMoment:form.elements.happy_moment.value,thought:thoughtInput.value,postcardMessage:postcardMessageInput.value,familyName:familyNameInput.value,wordToHear:wordToHearInput.value,wordToSay:wordToSayInput.value,emoji:finalEmoji.textContent,reason:reasonInput.value};localStorage.setItem("family_activity_temp",JSON.stringify(e))},loadData=()=>{const e=localStorage.getItem("family_activity_temp");if(e){const t=JSON.parse(e);t.happyMoment&&(form.elements.happy_moment.value=t.happyMoment),thoughtInput.value=t.thought||"",postcardMessageInput.value=t.postcardMessage||"",familyNameInput.value=t.familyName||"",wordToHearInput.value=t.wordToHear||"",wordToSayInput.value=t.wordToSay||"",reasonInput.value=t.reason||"",t.emoji&&"?"!==t.emoji&&emojis.forEach(e=>{e.textContent===t.emoji&&selectEmoji(e)}),updatePostcardPreview(),updateNametag(),updateReason(),showFeedback("이전 작업 내용을 복원했습니다.",!0)}},selectEmoji=e=>{emojis.forEach(e=>{e.setAttribute("aria-checked","false"),e.setAttribute("tabindex","-1"),e.classList.remove("bg-amber-200")}),e.setAttribute("aria-checked","true"),e.setAttribute("tabindex","0"),e.classList.add("bg-amber-200"),finalEmoji.textContent=e.textContent};
-
-            // --- 이벤트 리스너 ---
-            imageUpload.addEventListener('change',(e)=>{const t=e.target.files[0];t&&(imagePreview.innerHTML='<p class="animate-pulse">🖼️ 이미지 로딩 중...</p>',(()=>{const e=new FileReader;e.onload=e=>{imagePreview.innerHTML=`<img src="${e.target.result}" alt="업로드 이미지" class="w-full h-full object-cover rounded">`},e.readAsDataURL(t)})())});
-            postcardMessageInput.addEventListener('input',updatePostcardPreview);
-            familyNameInput.addEventListener('input',updateNametag);wordToHearInput.addEventListener('input',updateNametag);wordToSayInput.addEventListener('input',updateNametag);
-            reasonInput.addEventListener('input',updateReason);
-            emojiSelector.addEventListener('click',e=>{e.target.matches('[role="radio"]')&&selectEmoji(e.target)});
-            emojiSelector.addEventListener('keydown',e=>{e.target.matches('[role="radio"]')&&(" "===e.key||"Enter"===e.key)&&(e.preventDefault(),selectEmoji(e.target))});
-            saveBtn.addEventListener('click',()=>{showFeedback("이미지 생성 중...",!0),html2canvas(document.getElementById("captureArea"),{useCORS:!0,scale:2}).then(e=>{const t=document.createElement("a");t.download="우리가족_행복엽서.png",t.href=e.toDataURL("image/png"),t.click(),showFeedback("✅ 이미지가 성공적으로 저장되었습니다!",!0)}).catch(e=>{showFeedback("⚠️ 이미지 저장에 실패했습니다.",!1),console.error(e)})});
-            resultPrintBtn.addEventListener('click',()=>window.print());
-            resetBtn.addEventListener('click',()=>{confirm("정말로 모든 내용을 지우고 처음부터 다시 시작할까요? (저장된 내용도 삭제됩니다)")&&(form.reset(),localStorage.removeItem("family_activity_temp"),imagePreview.innerHTML="사진을 업로드 해주세요",updatePostcardPreview(),updateNametag(),updateReason(),emojis.forEach(e=>{e.setAttribute("aria-checked","false"),e.classList.remove("bg-amber-200")}),emojis.length>0&&(emojis[0].setAttribute("tabindex","0")),finalEmoji.textContent="?",showFeedback("모든 내용이 초기화되었습니다.",!0))});
+            // 미리보기 모드 확인
+            const isPreviewMode = urlParams.has('preview');
+            if (isPreviewMode) {
+                document.body.classList.add('preview-only-mode');
+                // 페이지 제목 변경
+                document.title = '공유받은 마음편지 💌';
+                // 미리보기 모드에서는 사용 방법 안내 숨기기
+                const usageSection = document.querySelector('.mt-4.sm\\:mt-6.p-3');
+                if (usageSection) {
+                    usageSection.style.display = 'none';
+                }
+                // 제목을 "공유받은 마음편지"로 변경
+                const mainTitle = document.querySelector('h1');
+                if (mainTitle) {
+                    mainTitle.textContent = '💌 공유받은 마음편지 💌';
+                }
+                // 설명 텍스트 변경
+                const description = document.querySelector('.text-slate-600');
+                if (description) {
+                    description.textContent = '누군가 당신에게 마음을 담아 보낸 특별한 편지입니다! 🎁';
+                }
+                // 미리보기 제목 변경
+                const previewTitle = document.querySelector('.preview-section h2');
+                if (previewTitle) {
+                    previewTitle.textContent = '💝 받은 마음편지 💝';
+                }
+            }
             
-            // 선생님용 학습지 PDF 다운로드 기능
-            teacherPrintBtn.addEventListener('click', () => {
-                const worksheet = document.getElementById('printable-worksheet');
-                showFeedback('PDF 생성 중... 잠시만 기다려주세요.', true);
+            if (urlParams.has('postcard')) {
+                try {
+                    const encodedData = urlParams.get('postcard');
+                    const decodedData = decodeURIComponent(encodedData);
+                    const postcardData = JSON.parse(decodedData);
+                    
+                    if (postcardData.recipient) recipientInput.value = postcardData.recipient;
+                    if (postcardData.sender) senderInput.value = postcardData.sender;
+                    if (postcardData.message) messageInput.value = postcardData.message;
+                    if (postcardData.promise) promiseInput.value = postcardData.promise;
+                    if (postcardData.date) dateInput.value = postcardData.date;
+                    if (postcardData.season) {
+                        applySeason(postcardData.season);
+                    }
+                    
+                    updatePostcardPreview();
+                    announceToScreenReader('공유된 편지가 성공적으로 로드되었습니다.');
+                    
+                    // URL에서 매개변수 제거 (깔끔하게)
+                    if (!isPreviewMode) {
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                    
+                } catch (error) {
+                    console.error('편지 데이터 로드 중 오류:', error);
+                }
+            }
+        }
 
-                // 캡처를 위해 잠시 보이게 하되, 화면에 영향을 주지 않도록 처리
-                worksheet.style.position = 'absolute';
-                worksheet.style.left = '-9999px';
-                worksheet.style.display = 'block';
+        // 🔗 현재 엽서 상태를 URL로 인코딩하여 링크 생성
+        function generatePostcardLink() {
+            const postcardData = {
+                recipient: recipientInput.value,
+                sender: senderInput.value,
+                message: messageInput.value,
+                promise: promiseInput.value,
+                date: dateInput.value,
+                season: currentSeason
+            };
+            
+            const encodedData = encodeURIComponent(JSON.stringify(postcardData));
+            const currentURL = window.location.origin + window.location.pathname;
+            return `${currentURL}?postcard=${encodedData}&preview=true`;
+        }
 
-                html2canvas(worksheet, { scale: 2, windowWidth: worksheet.scrollWidth, windowHeight: worksheet.scrollHeight })
-                    .then((canvas) => {
-                        const imgData = canvas.toDataURL('image/png');
-                        const pdf = new jsPDF('p', 'mm', 'a4');
-                        const pdfWidth = pdf.internal.pageSize.getWidth();
-                        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                        pdf.save('우리가족_행복한순간_학습지.pdf');
-                    })
-                    .catch(err => {
-                        showFeedback('⚠️ PDF 생성에 실패했습니다.', false);
-                        console.error(err);
-                    })
-                    .finally(() => {
-                        // 작업이 끝나면 다시 숨김
-                        worksheet.style.position = '';
-                        worksheet.style.left = '';
-                        worksheet.style.display = 'none';
-                        showFeedback('✅ PDF 파일이 다운로드되었습니다!', true);
-                    });
+        // 🔗 링크 복사 기능
+        async function copyPostcardLink() {
+            const originalText = copyLinkBtn.innerHTML;
+            copyLinkBtn.innerHTML = '<span class="mr-2">⏳</span>링크 생성 중...';
+            copyLinkBtn.disabled = true;
+            
+            try {
+                if (!recipientInput.value && !senderInput.value && !messageInput.value) {
+                    alert('편지 내용을 입력한 후 링크를 생성해주세요! 😊');
+                    return;
+                }
+                
+                const shareableLink = generatePostcardLink();
+                await navigator.clipboard.writeText(shareableLink);
+                
+                copyLinkBtn.innerHTML = '<span class="mr-2">✅</span>링크 복사 완료!';
+                copyLinkBtn.classList.add('copy-success');
+                
+                alert(`🎉 마음편지 링크가 복사되었어요!\n\n이 링크를 친구나 가족에게 보내면 아름다운 계절 애니메이션과 함께 편지만 깔끔하게 볼 수 있어요.\n\n💡 카카오톡, 문자, 이메일 등 어디든 붙여넣기(Ctrl+V 또는 Cmd+V) 하세요!`);
+                announceToScreenReader('편지 링크가 클립보드에 복사되었습니다.');
+                
+                setTimeout(() => {
+                    copyLinkBtn.classList.remove('copy-success');
+                }, 300);
+                
+            } catch (error) {
+                console.error('링크 복사 실패:', error);
+                alert('링크 복사에 실패했어요. 브라우저 설정을 확인하거나 다시 시도해주세요.');
+            } finally {
+                setTimeout(() => {
+                    copyLinkBtn.innerHTML = originalText;
+                    copyLinkBtn.disabled = false;
+                }, 2000);
+            }
+        }
+
+        // 모든 애니메이션 정리
+        function clearAllAnimations() {
+            animationIntervals.forEach(interval => clearInterval(interval));
+            animationIntervals = [];
+            
+            springPetals.innerHTML = '';
+            summerWaves.innerHTML = '';
+            autumnLeaves.innerHTML = '';
+            winterSnow.innerHTML = '';
+            
+            springPetals.style.display = 'none';
+            summerWaves.style.display = 'none';
+            autumnLeaves.style.display = 'none';
+            winterSnow.style.display = 'none';
+            
+            // 추가 장식 숨기기
+            document.querySelector('.spring-decorations').style.display = 'none';
+            document.querySelector('.summer-decorations').style.display = 'none';
+            document.querySelector('.autumn-decorations').style.display = 'none';
+            document.querySelector('.winter-decorations').style.display = 'none';
+        }
+
+        // 🌸 봄 - 꽃잎 흩날리기 애니메이션
+        function startSpringAnimation() {
+            clearAllAnimations();
+            springPetals.style.display = 'block';
+            document.querySelector('.spring-decorations').style.display = 'block';
+            
+            const createPetal = () => {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                petal.style.animationDelay = Math.random() * 2 + 's';
+                springPetals.appendChild(petal);
+                
+                setTimeout(() => {
+                    if (petal.parentNode) {
+                        petal.parentNode.removeChild(petal);
+                    }
+                }, 7000);
+            };
+            
+            // 초기 꽃잎들 생성
+            for (let i = 0; i < 6; i++) {
+                setTimeout(createPetal, i * 500);
+            }
+            
+            // 지속적으로 꽃잎 생성
+            const interval = setInterval(createPetal, 1500);
+            animationIntervals.push(interval);
+        }
+
+        // 🌊 여름 - 파도 애니메이션
+        function startSummerAnimation() {
+            clearAllAnimations();
+            summerWaves.style.display = 'block';
+            document.querySelector('.summer-decorations').style.display = 'block';
+            
+            const createWave = (delay) => {
+                const wave = document.createElement('div');
+                wave.className = 'wave';
+                wave.style.animationDuration = '4s';
+                wave.style.animationDelay = delay + 's';
+                summerWaves.appendChild(wave);
+            };
+            
+            // 여러 개의 파도 생성
+            createWave(0);
+            createWave(1);
+            createWave(2);
+        }
+
+        // 🍂 가을 - 낙엽 떨어지기 애니메이션
+        function startAutumnAnimation() {
+            clearAllAnimations();
+            autumnLeaves.style.display = 'block';
+            document.querySelector('.autumn-decorations').style.display = 'block';
+            
+            const leafEmojis = ['🍂', '🍁'];
+            const leafColors = ['#ea580c', '#dc2626', '#ca8a04'];
+            
+            const createLeaf = () => {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                const leafType = Math.random();
+                
+                if (leafType < 0.7) {
+                    leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
+                } else {
+                    leaf.innerHTML = '●';
+                    leaf.style.color = leafColors[Math.floor(Math.random() * leafColors.length)];
+                    leaf.style.fontSize = '12px';
+                }
+                
+                leaf.style.left = Math.random() * 100 + '%';
+                leaf.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                leaf.style.animationDelay = Math.random() * 2 + 's';
+                autumnLeaves.appendChild(leaf);
+                
+                setTimeout(() => {
+                    if (leaf.parentNode) {
+                        leaf.parentNode.removeChild(leaf);
+                    }
+                }, 8000);
+            };
+            
+            // 초기 낙엽들 생성
+            for (let i = 0; i < 5; i++) {
+                setTimeout(createLeaf, i * 600);
+            }
+            
+            // 지속적으로 낙엽 생성
+            const interval = setInterval(createLeaf, 2000);
+            animationIntervals.push(interval);
+        }
+
+        // ❄️ 겨울 - 눈 내리기 애니메이션
+        function startWinterAnimation() {
+            clearAllAnimations();
+            winterSnow.style.display = 'block';
+            document.querySelector('.winter-decorations').style.display = 'flex'; // 겨울 장식은 flex로 표시
+            
+            const snowflakeChars = ['❄', '❅', '✦', '✧', '◦'];
+            
+            const createSnowflake = () => {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.fontSize = (Math.random() * 6 + 10) + 'px';
+                snowflake.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                snowflake.style.animationDelay = Math.random() * 2 + 's';
+                winterSnow.appendChild(snowflake);
+                
+                setTimeout(() => {
+                    if (snowflake.parentNode) {
+                        snowflake.parentNode.removeChild(snowflake);
+                    }
+                }, 10000);
+            };
+            
+            // 초기 눈송이들 생성
+            for (let i = 0; i < 8; i++) {
+                setTimeout(createSnowflake, i * 400);
+            }
+            
+            // 지속적으로 눈송이 생성
+            const interval = setInterval(createSnowflake, 1200);
+            animationIntervals.push(interval);
+        }
+
+        // 계절 테마 적용
+        function applySeason(season) {
+            currentSeason = season;
+            
+            const seasonConfigs = {
+                spring: {
+                    class: 'season-spring',
+                    icon: '🌸',
+                    textClass: 'text-pink-700',
+                    animation: startSpringAnimation
+                },
+                summer: {
+                    class: 'season-summer',
+                    icon: '🌊',
+                    textClass: 'text-blue-700',
+                    animation: startSummerAnimation
+                },
+                autumn: {
+                    class: 'season-autumn',
+                    icon: '🍂',
+                    textClass: 'text-orange-700',
+                    animation: startAutumnAnimation
+                },
+                winter: {
+                    class: 'season-winter',
+                    icon: '❄️',
+                    textClass: 'text-gray-700',
+                    animation: startWinterAnimation
+                }
+            };
+            
+            // 기존 계절 클래스 제거
+            postcardPreview.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+            
+            const config = seasonConfigs[season];
+            postcardPreview.classList.add(config.class);
+            previewThemeIcon.textContent = config.icon;
+            
+            // 텍스트 색상 업데이트
+            const textElements = postcardPreview.querySelectorAll('.recipient-sender-text');
+            textElements.forEach(el => {
+                el.classList.remove('text-pink-700', 'text-blue-700', 'text-orange-700', 'text-gray-700');
+                el.classList.add(config.textClass);
             });
             
-            // --- 초기화 ---
-            loadData();
-            setInterval(saveData, 10000);
+            // 계절 선택 상태 업데이트
+            document.querySelectorAll('.season-option').forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-season="${season}"]`).classList.add('selected');
+            
+            // 애니메이션 시작
+            config.animation();
+            
+            announceToScreenReader(`${config.icon} ${season} 테마가 적용되었습니다.`);
+        }
+
+        function setTodayDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        // 디바운스된 미리보기 업데이트 (성능 최적화)
+        function debouncedUpdatePreview() {
+            if (updateTimeoutId) {
+                clearTimeout(updateTimeoutId);
+            }
+            updateTimeoutId = setTimeout(updatePostcardPreview, 300); // 300ms 대기
+        }
+
+        function updatePostcardPreview() {
+            previewRecipient.textContent = recipientInput.value || '받는 사람 이름';
+            previewSender.textContent = senderInput.value || '보내는 사람 이름';
+            previewMessage.textContent = messageInput.value || '따뜻한 마음의 메시지를 여기에 적어주세요...';
+            previewPromise.textContent = promiseInput.value ? `💝 실천 약속: ${promiseInput.value}` : '';
+            
+            const dateValue = dateInput.value;
+            if (dateValue) {
+                const [year, month, day] = dateValue.split('-');
+                previewDate.textContent = `${year}년 ${month}월 ${day}일`;
+            } else {
+                previewDate.textContent = '날짜를 선택해주세요';
+            }
+            
+            adjustTextSizeBasedOnContent();
+        }
+
+        function adjustTextSizeBasedOnContent() {
+            const messageLength = messageInput.value.length;
+            const promiseLength = promiseInput.value.length;
+            const isMobile = window.innerWidth < 640;
+            
+            previewMessage.classList.remove('text-lg', 'text-base', 'text-sm', 'text-xs');
+            if (isMobile) {
+                if (messageLength > 150) {
+                    previewMessage.classList.add('text-xs');
+                } else if (messageLength > 80) {
+                    previewMessage.classList.add('text-sm');
+                } else if (messageLength > 40) {
+                    previewMessage.classList.add('text-base');
+                } else {
+                    previewMessage.classList.add('text-base');
+                }
+            } else {
+                if (messageLength > 200) {
+                    previewMessage.classList.add('text-xs');
+                } else if (messageLength > 120) {
+                    previewMessage.classList.add('text-sm');
+                } else if (messageLength > 60) {
+                    previewMessage.classList.add('text-base');
+                } else {
+                    previewMessage.classList.add('text-lg');
+                }
+            }
+            
+            previewPromise.classList.remove('text-base', 'text-sm', 'text-xs');
+            if (isMobile) {
+                if (promiseLength > 60) {
+                    previewPromise.classList.add('text-xs');
+                } else if (promiseLength > 30) {
+                    previewPromise.classList.add('text-sm');
+                } else {
+                    previewPromise.classList.add('text-sm');
+                }
+            } else {
+                if (promiseLength > 100) {
+                    previewPromise.classList.add('text-xs');
+                } else if (promiseLength > 50) {
+                    previewPromise.classList.add('text-sm');
+                } else {
+                    previewPromise.classList.add('text-base');
+                }
+            }
+        }
+
+        // 이미지 다운로드 기능
+        async function downloadPostcardAsImage() {
+            const originalText = downloadImageBtn.innerHTML;
+            downloadImageBtn.innerHTML = '<span class="mr-2">⏳</span>이미지 생성 중...';
+            downloadImageBtn.disabled = true;
+            downloadImageBtn.classList.add('loading');
+            
+                            announceToScreenReader('편지 이미지 생성을 시작합니다.');
+            
+            try {
+                if (typeof html2canvas === 'undefined') {
+                    throw new Error('이미지 생성 라이브러리가 로드되지 않았습니다.');
+                }
+                
+                updatePostcardPreview(); // 최종 내용 반영
+                await new Promise(resolve => setTimeout(resolve, 500)); // 애니메이션 및 DOM 업데이트 대기
+                
+                if (!postcardPreview || postcardPreview.offsetWidth === 0) {
+                    throw new Error('편지를 먼저 확인해주세요. 미리보기가 표시되지 않았습니다.');
+                }
+
+                const canvas = await html2canvas(postcardPreview, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: false,
+                    logging: false,
+                    backgroundColor: null, // 배경은 CSS에서 처리
+                    width: postcardPreview.offsetWidth,
+                    height: postcardPreview.offsetHeight,
+                    scrollX: 0,
+                    scrollY: 0,
+                    letterRendering: true,
+                    imageTimeout: 15000,
+                    removeContainer: true,
+                    onclone: function(clonedDoc) {
+                        const srOnlyElements = clonedDoc.querySelectorAll('.sr-only');
+                        srOnlyElements.forEach(el => el.remove());
+                        
+                        const clonedPreview = clonedDoc.getElementById('postcardPreview');
+                        if (clonedPreview) {
+                            clonedPreview.style.height = 'auto';
+                            clonedPreview.style.minHeight = postcardPreview.offsetHeight + 'px';
+                            clonedPreview.style.overflow = 'visible';
+                            clonedPreview.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif';
+                            
+                            const allElements = clonedPreview.querySelectorAll('*');
+                            allElements.forEach(el => {
+                                el.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif';
+                            });
+                        }
+                        return clonedDoc;
+                    }
+                });
+
+                if (canvas.width === 0 || canvas.height === 0) {
+                    throw new Error('이미지 생성에 실패했습니다 (캔버스 크기 0).');
+                }
+                
+                const imgData = canvas.toDataURL('image/png', 1.0);
+                if (imgData === 'data:,' || imgData.length < 100) {
+                    throw new Error('이미지 데이터 생성에 실패했습니다.');
+                }
+                
+                const recipientName = recipientInput.value || '소중한사람';
+                const fileName = `${recipientName.replace(/[^\w가-힣ㄱ-ㅎㅏ-ㅣ一-龠ぁ-ゔァ-ヴー]/g, '_')}_마음편지_${currentSeason}.png`;
+                
+                const downloadLink = document.createElement('a');
+                downloadLink.href = imgData;
+                downloadLink.download = fileName;
+                downloadLink.style.display = 'none';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                announceToScreenReader('편지 이미지가 성공적으로 저장되었습니다.');
+                alert(`🎉 ${currentSeason} 테마 마음편지 이미지가 성공적으로 저장되었습니다!\n애니메이션의 현재 모습과 함께 다운로드 폴더에 저장되었어요.`);
+                
+            } catch (error) {
+                console.error("이미지 생성 오류:", error);
+                let errorMessage = "이미지 생성 중 오류가 발생했습니다.\n\n" + error.message;
+                alert(errorMessage);
+                announceToScreenReader('이미지 생성 중 오류가 발생했습니다.');
+            } finally {
+                downloadImageBtn.innerHTML = originalText;
+                downloadImageBtn.disabled = false;
+                downloadImageBtn.classList.remove('loading');
+            }
+        }
+
+        // 이벤트 리스너 등록
+        setTodayDate();
+
+        // 실시간 미리보기 적용 (디바운스 적용)
+        [recipientInput, senderInput, messageInput, promiseInput, dateInput].forEach(input => {
+            input.addEventListener('input', debouncedUpdatePreview);
         });
+        
+        updatePreviewButton.addEventListener('click', () => {
+            updatePostcardPreview();
+                            announceToScreenReader('편지 내용이 업데이트되었습니다.'); // 버튼 클릭 시에는 안내
+        });
+        
+        downloadImageBtn.addEventListener('click', downloadPostcardAsImage);
+        copyLinkBtn.addEventListener('click', copyPostcardLink);
+        
+        // 계절 선택 이벤트 리스너들
+        seasonSpringButton.addEventListener('click', () => applySeason('spring'));
+        seasonSummerButton.addEventListener('click', () => applySeason('summer'));
+        seasonAutumnButton.addEventListener('click', () => applySeason('autumn'));
+        seasonWinterButton.addEventListener('click', () => applySeason('winter'));
+
+        copyContentButton.addEventListener('click', () => {
+            const dateValue = dateInput.value;
+            let formattedDate = '날짜 미지정';
+            if (dateValue) {
+                const [year, month, day] = dateValue.split('-');
+                formattedDate = `${year}년 ${month}월 ${day}일`;
+            }
+
+            const seasonNames = {
+                spring: '봄 (꽃잎 흩날림)',
+                summer: '여름 (파도 움직임)',
+                autumn: '가을 (낙엽 떨어짐)',
+                winter: '겨울 (눈 내림)'
+            };
+
+            const contentToCopy = `
+마음편지 💝
+--------------------
+받는 사람: ${recipientInput.value}
+보내는 사람: ${senderInput.value}
+작성 날짜: ${formattedDate}
+선택한 계절: ${seasonNames[currentSeason]}
+
+[마음의 메시지]
+${messageInput.value}
+
+[소중한 사람을 위한 나의 약속]
+${promiseInput.value}
+--------------------
+`.trim();
+
+            navigator.clipboard.writeText(contentToCopy)
+                .then(() => {
+                    alert('엽서 내용이 클립보드에 복사되었어요!');
+                    announceToScreenReader('엽서 내용이 클립보드에 복사되었습니다.');
+                })
+                .catch(err => {
+                    console.error('복사 실패: ', err);
+                    alert('앗! 내용 복사에 실패했어요.');
+                });
+        });
+
+        resetFormButton.addEventListener('click', () => {
+            if (confirm('정말로 모든 내용을 지우고 처음부터 다시 작성할까요?')) {
+                recipientInput.value = '';
+                senderInput.value = '';
+                messageInput.value = '';
+                promiseInput.value = '';
+                setTodayDate();
+                applySeason('spring');
+                updatePostcardPreview();
+                alert('모든 내용이 지워졌어요. 새로운 마음으로 마음편지를 다시 작성해보세요! 😊');
+                announceToScreenReader('양식이 초기화되었습니다.');
+            }
+        });
+
+        // 초기 설정
+        applySeason('spring'); // 초기 테마 적용
+        loadPostcardFromURL(); // URL에서 데이터 로드 시도
+        updatePostcardPreview(); // 초기 미리보기 업데이트
+        
+        window.addEventListener('resize', adjustTextSizeBasedOnContent);
+        window.addEventListener('beforeunload', clearAllAnimations);
+        
+        // 미리보기 모드 확인하여 적절한 메시지 출력
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPreviewMode = urlParams.has('preview');
+        announceToScreenReader(isPreviewMode ? '공유받은 마음편지 페이지가 로드되었습니다.' : '마음편지 서비스 페이지가 로드되었습니다.');
     </script>
 </body>
 </html>
